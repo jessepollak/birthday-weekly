@@ -1,0 +1,27 @@
+{
+  "name": "birthdayweekly",
+  "version": "0.0.1",
+  "description": "A little app to remind you about birthdays.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "run": "node background.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "googleapis": "^45.0.0",
+    "moment": "^2.24.0"
+  },
+  "engines": {
+    "node": "13.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/hello-express"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}
