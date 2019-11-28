@@ -3,3 +3,4 @@
 #!include:.gitignore
 !credentials.json
 !token.json
+!build/**

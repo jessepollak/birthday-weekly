@@ -1,5 +1,5 @@
-const express = require('express')
-const weeklyEmail = require('./weeklyEmail')
+import express from 'express'
+import weeklyEmail from './weeklyEmail'
 
 exports.createRouter = function() {
   const scheduledRouter = express.Router()

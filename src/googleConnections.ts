@@ -1,20 +1,27 @@
-const moment = require('moment')
-const { google } = require('googleapis')
+import moment, { Moment } from 'moment'
+import { google } from 'googleapis'
+import { OAuth2Client } from 'googleapis-common'
 
-exports.fetchConnectionBirthdays = async function fetchConnectionBirthdays(authContext) {
+export interface Connection {
+  name: string,
+  birthday: Moment,
+  connection: object
+}
+
+export async function fetchConnectionBirthdays(authContext: OAuth2Client): Promise<Array<Connection>> {
   const service = google.people({version: 'v1', auth: authContext})
   let nextPageToken = undefined
-  let connectionsWithBirthdays = []
+  let connectionsWithBirthdays: Array<Connection> = []
 
   try {
     do {
-      let { data, data: { connections } } = await service.people.connections.list({
+      let { data: { connections, nextPageToken: _nextPageToken } } = await service.people.connections.list({
         resourceName: 'people/me',
         pageSize: 250,
         personFields: 'names,emailAddresses,birthdays',
         pageToken: nextPageToken
       })
-      nextPageToken = data.nextPageToken
+      nextPageToken = _nextPageToken
 
       connectionsWithBirthdays = connectionsWithBirthdays.concat(connections.map((person) => {
         if (person.birthdays && person.birthdays.length > 0) {
@@ -32,6 +39,6 @@ exports.fetchConnectionBirthdays = async function fetchConnectionBirthdays(authC
 
     return connectionsWithBirthdays
   } catch (err) {
-    console.error('The API returned an error: ' + err)
+    throw err
   }
 }

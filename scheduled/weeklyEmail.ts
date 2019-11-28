@@ -1,10 +1,11 @@
-const moment = require('moment')
-const { loadCredentialsAndExecute } = require('../src/googleAuth')
-const { fetchConnectionBirthdays } = require('../src/googleConnections')
-const email = require('../src/email')
+import moment, { Moment } from 'moment'
+import { loadCredentialsAndExecute } from '../src/googleAuth'
+import { fetchConnectionBirthdays, Connection } from '../src/googleConnections'
+import * as email from '../src/email'
+import { Request, Response } from 'express'
 
-function isWithinDays(numDays) {
-  return (date) => {
+function isWithinDays(numDays: number) {
+  return (date: Moment) => {
     const targetDate = moment().add(numDays, 'days')
     const isWithinCurrentYear = date.dayOfYear() >= moment().dayOfYear() && date.dayOfYear() <= targetDate.dayOfYear()
     const isInNewYear = date.dayOfYear() <= targetDate.dayOfYear() && moment().year() < targetDate.year()
@@ -12,7 +13,7 @@ function isWithinDays(numDays) {
   }
 }
 
-function formatForEmail(connection) {
+function formatForEmail(connection: Connection) {
   let age
   if (connection.birthday.year() === moment().year() || connection.birthday.year() === 0) {
     age = "Unknown"
@@ -32,10 +33,10 @@ function formatForEmail(connection) {
   }
 }
 
-module.exports =  async (req, res) => {
-  email.configure(process.env.SENDGRID_API_KEY)
+export default async function weeklyEmail(req: Request, res: Response) {
+  email.configure(process.env.SENDGRID_API_KEY as string)
 
-  const connections = await loadCredentialsAndExecute(fetchConnectionBirthdays)
+  const connections: Array<Connection> = await loadCredentialsAndExecute(fetchConnectionBirthdays) as Array<Connection>
 
   const formattedBirthdayData = {
     withinSevenDays: [],

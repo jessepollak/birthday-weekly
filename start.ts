@@ -1,4 +1,5 @@
-const express = require('express')
+import express from 'express'
+
 const app = express()
 
 if (process.env.SCHEDULED_WORKER) {

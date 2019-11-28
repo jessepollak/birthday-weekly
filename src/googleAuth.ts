@@ -1,6 +1,8 @@
-const fs = require('fs')
-const readline = require('readline')
-const { google } = require('googleapis')
+import fs from 'fs'
+import readline from 'readline'
+import { google } from 'googleapis'
+import { OAuth2Client } from 'googleapis-common'
+import { Credentials } from 'google-auth-library'
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/contacts']
@@ -9,13 +11,20 @@ const SCOPES = ['https://www.googleapis.com/auth/contacts']
 // time.
 const TOKEN_PATH = 'token.json'
 
+interface CredentialsObject {
+  installed: {
+    client_secret: string,
+    client_id: string,
+    redirect_uris: Array<string>
+  }
+}
 
-exports.loadCredentialsAndExecute = async function loadCredentialsAndExecute(callback) {
+export async function loadCredentialsAndExecute(callback: Function) {
   return new Promise((resolve, reject) => {
     fs.readFile('credentials.json', async (err, content) => {
       if (err) reject(err)
       // Authorize a client with credentials, then call the Google Tasks API.
-      resolve(await authorize(JSON.parse(content), callback))
+      resolve(await authorize(JSON.parse(content.toString()), callback))
     })
   })
 }
@@ -26,7 +35,7 @@ exports.loadCredentialsAndExecute = async function loadCredentialsAndExecute(cal
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-async function authorize(credentials, callback) {
+async function authorize(credentials: CredentialsObject, callback: Function) {
   return new Promise((resolve, reject) => {
     const {client_secret, client_id, redirect_uris} = credentials.installed
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
@@ -34,7 +43,7 @@ async function authorize(credentials, callback) {
     // Check if we have previously stored a token.
     fs.readFile(TOKEN_PATH, async (err, token) => {
       if (err) resolve(await getNewToken(oAuth2Client, callback))
-      oAuth2Client.setCredentials(JSON.parse(token))
+      oAuth2Client.setCredentials(JSON.parse(token.toString()))
       resolve(await callback(oAuth2Client))
     })
   })
@@ -46,7 +55,7 @@ async function authorize(credentials, callback) {
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-async function getNewToken(oAuth2Client, callback) {
+async function getNewToken(oAuth2Client: OAuth2Client, callback: Function) {
   return new Promise((resolve, reject) => {
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',
@@ -61,7 +70,7 @@ async function getNewToken(oAuth2Client, callback) {
       rl.close()
       oAuth2Client.getToken(code, async (err, token) => {
         if (err) return reject(err)
-        oAuth2Client.setCredentials(token)
+        oAuth2Client.setCredentials(token as Credentials)
         // Store the token to disk for later program executions
         fs.writeFile(TOKEN_PATH, JSON.stringify(token), async (err) => {
           if (err) return reject(err)
