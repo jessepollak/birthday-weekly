@@ -4,8 +4,8 @@
   "description": "A little app to remind you about birthdays.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "run": "node background.js",
+    "start:api": "node api.js",
+    "start:scheduled": "node scheduled.js",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
     "deploy": "gcloud run deploy --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },

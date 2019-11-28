@@ -5,10 +5,15 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "run",
+      "script": "start:scheduled",
       "group": {
         "kind": "build",
         "isDefault": true
+      },
+      "options": {
+        "env": {
+          "SCHEDULED_WORKER": "true"
+        }
       }
     }
   ]

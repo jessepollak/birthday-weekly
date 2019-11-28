@@ -1,7 +1,7 @@
-const { loadCredentialsAndExecute } = require('./src/googleAuth')
-const { fetchConnectionBirthdays } = require('./src/googleConnections')
 const moment = require('moment')
-const email = require('./src/email')
+const { loadCredentialsAndExecute } = require('../src/googleAuth')
+const { fetchConnectionBirthdays } = require('../src/googleConnections')
+const email = require('../src/email')
 
 function isWithinDays(numDays) {
   return (date) => {
@@ -32,8 +32,7 @@ function formatForEmail(connection) {
   }
 }
 
-const run = async () => {
-  console.log(process.env.SENDGRID_API_KEY)
+module.exports =  async (req, res) => {
   email.configure(process.env.SENDGRID_API_KEY)
 
   const connections = await loadCredentialsAndExecute(fetchConnectionBirthdays)
@@ -52,6 +51,6 @@ const run = async () => {
   }
 
   email.sendWeeklyEmail('jesse@pollak.io', formattedBirthdayData)
-}
 
-run()
+  res.send("OK")
+}
