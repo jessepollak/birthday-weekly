@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node start.js",
-    "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
-    "deploy:api": "gcloud run deploy --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
+    "build": "gcloud builds submit --tag gcr.io/birthday-weekly/latest",
+    "deploy": "npm run deploy:api && npm run deploy:scheduled",
+    "deploy:api": "gcloud run deploy --image gcr.io/birthday-weekly/latest --platform managed",
+    "deploy:scheduled": "gcloud run deploy birthday-weekly-scheduled --image gcr.io/birthday-weekly/latest --platform managed"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",

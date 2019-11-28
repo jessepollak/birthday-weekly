@@ -1,0 +1,5 @@
+.git
+.gitignore
+#!include:.gitignore
+!credentials.json
+!token.json
