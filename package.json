@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node start.js",
+    "test": "echo 'no tests'",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/latest",
     "deploy": "npm run deploy:api && npm run deploy:scheduled",
     "deploy:api": "gcloud run deploy --image gcr.io/birthday-weekly/latest --platform managed",

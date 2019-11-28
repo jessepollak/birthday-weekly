@@ -2,7 +2,7 @@
 
 set -e
 
-echo "${{ secrets.GoogleServiceKey }}" | base64 --decode > "$HOME"/gcloud.json
+echo $GOOGLE_SERVICE_KEY | base64 --decode > "$HOME"/gcloud.json
 
 gcloud auth activate-service-account --key-file="$HOME"/gcloud.json --project birthday-weekly
 gcloud auth configure-docker
