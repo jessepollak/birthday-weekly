@@ -10,12 +10,12 @@ gcloud auth configure-docker
 gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly
 
 gcloud beta run deploy birthday-weekly \
-  --image birthday-weekly/birthday-weekly \
+  --image gcr.io/birthday-weekly/birthday-weekly \
   --region us-east1 \
   --platform managed \
   --allow-unauthenticated
 
 gcloud beta run deploy birthday-weekly-scheduled \
-  --image birthday-weekly/birthday-weekly \
+  --image gcr.io/birthday-weekly/birthday-weekly \
   --region us-east1 \
   --platform managed \
