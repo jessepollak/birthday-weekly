@@ -4,12 +4,8 @@ const app = express()
 
 if (process.env.SCHEDULED_WORKER) {
   const scheduled = require('./scheduled')
-
-
   const scheduledRouter = scheduled.createRouter()
-
   app.use('/scheduled', scheduledRouter)
-
 } else {
   const api = require('./api')
   api.initialize(app)

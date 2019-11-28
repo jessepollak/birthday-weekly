@@ -8,10 +8,10 @@
     "start:development": "ts-node-dev --respawn --transpileOnly ./start.ts",
     "start:production": "node build/start.js",
     "test": "echo 'no tests'",
-    "build": "npm run tsc && gcloud builds submit --tag gcr.io/birthday-weekly/latest",
+    "build": "npm run tsc && gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
     "deploy": "npm run deploy:api && npm run deploy:scheduled",
-    "deploy:api": "gcloud run deploy --image gcr.io/birthday-weekly/latest --platform managed",
-    "deploy:scheduled": "gcloud run deploy birthday-weekly-scheduled --image gcr.io/birthday-weekly/latest --platform managed"
+    "deploy:api": "gcloud run deploy birthday-weekly --image gcr.io/birthday-weekly/birthday-weekly --platform managed",
+    "deploy:scheduled": "gcloud run deploy birthday-weekly-scheduled --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
