@@ -4,8 +4,9 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "start:scheduled",
       "type": "npm",
-      "script": "start:scheduled",
+      "script": "start",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -14,6 +15,15 @@
         "env": {
           "SCHEDULED_WORKER": "true"
         }
+      }
+    },
+    {
+      "label": "start:api",
+      "type": "npm",
+      "script": "start",
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     }
   ]

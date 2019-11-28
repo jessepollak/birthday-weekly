@@ -4,10 +4,9 @@
   "description": "A little app to remind you about birthdays.",
   "main": "server.js",
   "scripts": {
-    "start:api": "node api.js",
-    "start:scheduled": "node scheduled.js",
+    "start": "node start.js",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
-    "deploy": "gcloud run deploy --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
+    "deploy:api": "gcloud run deploy --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
