@@ -1,0 +1,13 @@
+name: Deploy
+# This workflow is triggered on pushes to the repository.
+on: 
+  push:
+    branches: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/google
