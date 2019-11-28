@@ -9,7 +9,7 @@ exports.createRouter = function() {
     res.send("Scheduled Test")
   })
 
-  scheduledRouter.get('/weekly-email', weeklyEmail)
+  scheduledRouter.post('/weekly-email', weeklyEmail)
 
   return scheduledRouter
 }
