@@ -1,0 +1,8 @@
+name: 'Cloud Run'
+description: 'Authenticate with gcloud, push image to GCR and deploy as a new revision to Cloud Run'
+branding:
+  icon: 'arrow-up-circle'
+  color: 'green'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
