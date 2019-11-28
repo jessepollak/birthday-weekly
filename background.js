@@ -1,6 +1,7 @@
 const { loadCredentialsAndExecute } = require('./src/googleAuth')
 const { fetchConnectionBirthdays } = require('./src/googleConnections')
 const moment = require('moment')
+const email = require('./src/email')
 
 function isWithinDays(numDays) {
   return (date) => {
@@ -11,21 +12,46 @@ function isWithinDays(numDays) {
   }
 }
 
-const run = async () => {
-  const connections = await loadCredentialsAndExecute(fetchConnectionBirthdays)
+function formatForEmail(connection) {
+  let age
+  if (connection.birthday.year() === moment().year() || connection.birthday.year() === 0) {
+    age = "Unknown"
+  } else {
+    age = moment().year() - connection.birthday.year() 
 
-  const groupings = {
-    7: connections.filter((c) => { return isWithinDays(7)(c.birthday) }),
-    30: connections.filter((c) => { return isWithinDays(30)(c.birthday) }),
-    60: connections.filter((c) => { return isWithinDays(60)(c.birthday) })
-  }
-
-  for (group in groupings) {
-    console.log(`== People with birthday in less than or equal to ${group} days ==`)
-    for (connection of groupings[group]) {
-      console.log(`${connection.name}'s birthday is on ${connection.birthday.format("MMMM Do YYYY")}`)
+    // If in the new year, add one
+    if (connection.birthday.dayOfYear() < moment().dayOfYear()) {
+      age += 1
     }
   }
+
+  return {
+    name: connection.name,
+    age: age,
+    birthday: connection.birthday.format("MMMM Do (YYYY)")
+  }
+}
+
+const run = async () => {
+  console.log(process.env.SENDGRID_API_KEY)
+  email.configure(process.env.SENDGRID_API_KEY)
+
+  const connections = await loadCredentialsAndExecute(fetchConnectionBirthdays)
+
+  const formattedBirthdayData = {
+    withinSevenDays: [],
+    withinThirtyDays: []
+  }
+
+  for (let connection of connections) {
+    if (isWithinDays(7)(connection.birthday)) {
+      formattedBirthdayData.withinSevenDays.push(formatForEmail(connection))
+    } else if (isWithinDays(30)(connection.birthday)) {
+      formattedBirthdayData.withinThirtyDays.push(formatForEmail(connection))
+    }
+  }
+
+  email.sendWeeklyEmail('jesse@pollak.io', formattedBirthdayData)
 }
 
 run()

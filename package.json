@@ -5,9 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "run": "node background.js"
+    "run": "node background.js",
+    "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
+    "deploy": "gcloud run deploy --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "express": "^4.16.4",
     "googleapis": "^45.0.0",
     "moment": "^2.24.0"
