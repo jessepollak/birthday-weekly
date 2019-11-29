@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "tsc": "tsc",
-    "start:development": "ts-node-dev --respawn --transpileOnly ./start.ts",
+    "start:development": "ts-node-dev --respawn --transpileOnly ./src/start.ts",
     "start:production": "node build/start.js",
     "test": "echo 'no tests'",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
@@ -14,11 +14,23 @@
     "deploy:scheduled": "gcloud run deploy birthday-weekly-scheduled --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^2.6.0",
     "@sendgrid/mail": "^6.4.0",
+    "@types/body-parser": "^1.17.1",
     "@types/express": "^4.17.2",
+    "@types/express-session": "^1.15.16",
+    "@types/passport": "^1.0.2",
+    "@types/passport-google-oauth": "^1.0.41",
+    "body-parser": "^1.19.0",
+    "class-validator": "^0.11.0",
     "express": "^4.16.4",
+    "express-session": "^1.17.0",
+    "fireorm": "^0.12.1",
     "googleapis": "^45.0.0",
     "moment": "^2.24.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
+    "reflect-metadata": "^0.1.13",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.2"
   },

@@ -1,8 +1,9 @@
 import moment, { Moment } from 'moment'
-import { loadCredentialsAndExecute } from '../src/googleAuth'
-import { fetchConnectionBirthdays, Connection } from '../src/googleConnections'
-import * as email from '../src/email'
+import { loadCredentialsAndExecute } from '../lib/googleAuth'
+import { fetchConnectionBirthdays, Connection } from '../lib/googleConnections'
+import * as email from '../lib/email'
 import { Request, Response } from 'express'
+import { UserRepository } from '../lib/models/user'
 
 function isWithinDays(numDays: number) {
   return (date: Moment) => {
@@ -36,22 +37,26 @@ function formatForEmail(connection: Connection) {
 export default async function weeklyEmail(req: Request, res: Response) {
   email.configure(process.env.SENDGRID_API_KEY as string)
 
-  const connections: Array<Connection> = await loadCredentialsAndExecute(fetchConnectionBirthdays) as Array<Connection>
+  const users = await UserRepository.all()
 
-  const formattedBirthdayData = {
-    withinSevenDays: [],
-    withinThirtyDays: []
-  }
+  for (let user of users) {
+    const connections: Array<Connection> = await loadCredentialsAndExecute(fetchConnectionBirthdays) as Array<Connection>
 
-  for (let connection of connections) {
-    if (isWithinDays(7)(connection.birthday)) {
-      formattedBirthdayData.withinSevenDays.push(formatForEmail(connection))
-    } else if (isWithinDays(30)(connection.birthday)) {
-      formattedBirthdayData.withinThirtyDays.push(formatForEmail(connection))
+    const formattedBirthdayData = {
+      withinSevenDays: [],
+      withinThirtyDays: []
     }
-  }
 
-  email.sendWeeklyEmail('jesse@pollak.io', formattedBirthdayData)
+    for (let connection of connections) {
+      if (isWithinDays(7)(connection.birthday)) {
+        formattedBirthdayData.withinSevenDays.push(formatForEmail(connection))
+      } else if (isWithinDays(30)(connection.birthday)) {
+        formattedBirthdayData.withinThirtyDays.push(formatForEmail(connection))
+      }
+    }
+
+    email.sendWeeklyEmail(user.email, formattedBirthdayData)
+  }
 
   res.send("OK")
 }
