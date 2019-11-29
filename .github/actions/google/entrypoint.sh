@@ -18,4 +18,4 @@ gcloud beta run deploy birthday-weekly \
 gcloud beta run deploy birthday-weekly-scheduled \
   --image gcr.io/birthday-weekly/birthday-weekly \
   --region us-east1 \
-  --platform managed \
+  --platform managed
