@@ -1,8 +1,8 @@
 import moment, { Moment } from 'moment'
-import { fetchConnectionBirthdays, Connection } from '../lib/googleConnections'
-import * as email from '../lib/email'
+import { fetchConnectionBirthdays, Connection } from '../../lib/googleConnections'
+import * as email from '../../lib/email'
 import { Request, Response } from 'express'
-import { UserRepository } from '../lib/models/user'
+import { UserRepository } from '../../lib/models/user'
 
 function isWithinDays(numDays: number) {
   return (date: Moment) => {
