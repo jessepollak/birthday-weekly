@@ -1,6 +1,8 @@
 import { Firestore } from '@google-cloud/firestore'
 import { initialize as initializeFireorm } from 'fireorm'
-import User from './user'
+import User from './User'
+
+export const User = User
 
 export async function configure(app) {
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {

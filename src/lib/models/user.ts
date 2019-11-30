@@ -1,6 +1,5 @@
 import { Collection, getRepository } from 'fireorm'
 
-
 export interface UserGoogleCredentials {
   accessToken: string;
   refreshToken: string;

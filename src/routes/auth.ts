@@ -1,9 +1,12 @@
+import express from 'express'
 import passport from 'passport'
 
-export function addRoutes(router) {
+export function createRouter() {
+  const router = express.Router()
+
   router.get(
-    '/auth/google',
-    passport.authenticate('google-oauth-strategy', {
+    '/google',
+    passport.authenticate('google-oauth', {
       // @ts-ignore accessType added to type yet
       accessType: 'offline',
       prompt: 'consent',
@@ -16,10 +19,12 @@ export function addRoutes(router) {
   )
 
   router.get(
-    '/auth/google/callback',
-    passport.authenticate('google-oauth-strategy', { failureRedirect: '/' }),
+    '/google/callback',
+    passport.authenticate('google-oauth', { failureRedirect: '/' }),
     (req, res) => {
       res.redirect('/dashboard')
     }
   )
+
+  return router
 }

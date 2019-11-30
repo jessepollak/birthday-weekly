@@ -1,7 +1,7 @@
 import { OAuth2Strategy } from 'passport-google-oauth'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
 import fetch from 'node-fetch'
-import { UserRepository, UserGoogleCredentials } from '../lib/models/user'
+import { UserRepository, UserGoogleCredentials } from './models/User'
 
 export const AMPBearerStrategy = new BearerStrategy(async function(token, done) {
   return done(null, false)
