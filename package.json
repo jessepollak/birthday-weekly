@@ -9,7 +9,7 @@
     "start:production": "node build/start.js",
     "test": "echo 'no tests'",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
-    "deploy": "gcloud run deploy birthday-weekly --image gcr.io/birthday-weekly/birthday-weekly --platform managed",
+    "deploy": "gcloud run deploy birthday-weekly --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },
   "dependencies": {
     "@google-cloud/firestore": "^2.6.0",
