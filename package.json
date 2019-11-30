@@ -9,9 +9,7 @@
     "start:production": "node build/start.js",
     "test": "echo 'no tests'",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
-    "deploy": "npm run deploy:api && npm run deploy:scheduled",
-    "deploy:api": "gcloud run deploy birthday-weekly --image gcr.io/birthday-weekly/birthday-weekly --platform managed",
-    "deploy:scheduled": "gcloud run deploy birthday-weekly-scheduled --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
+    "deploy": "gcloud run deploy birthday-weekly --image gcr.io/birthday-weekly/birthday-weekly --platform managed",
   },
   "dependencies": {
     "@google-cloud/firestore": "^2.6.0",
@@ -29,8 +27,10 @@
     "fireorm": "^0.12.1",
     "googleapis": "^45.0.0",
     "moment": "^2.24.0",
+    "node-fetch": "^2.6.0",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
+    "passport-http-bearer": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.2"

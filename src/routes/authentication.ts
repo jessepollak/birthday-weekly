@@ -35,7 +35,7 @@ export function configure(router) {
       googleCredentials: {
         accessToken: accessToken,
         refreshToken: refreshToken
-      } as UserGoogleCredentials
+      }
     })
     done(null, user)
   }))
