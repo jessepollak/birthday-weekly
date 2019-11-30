@@ -1,15 +1,21 @@
 import { Collection, getRepository } from 'fireorm'
 
+
+export interface UserGoogleCredentials {
+  accessToken: string;
+  refreshToken: string;
+  idToken?: string;
+  expiryDate?: number;
+  tokenType?: string;
+}
+
 @Collection()
 export default class User {
   id: string;
   googleProfileId: string;
   name: string;
   email: string;
-  googleCredentials: {
-    accessToken: string;
-    refreshToken: string;
-  }
+  googleCredentials: UserGoogleCredentials
 }
 
 export class UserRepository {
@@ -36,6 +42,12 @@ export class UserRepository {
     }
 
     return user
+  }
+
+  static async updateUserGoogleCredentials(user, credentials: { accessToken, refreshToken }) {
+    const repository = this.repository()
+    user.credentials = credentials
+    return repository.update(user)
   }
 
   static repository() {

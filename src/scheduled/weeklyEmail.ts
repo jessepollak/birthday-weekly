@@ -1,5 +1,4 @@
 import moment, { Moment } from 'moment'
-import { loadCredentialsAndExecute } from '../lib/googleAuth'
 import { fetchConnectionBirthdays, Connection } from '../lib/googleConnections'
 import * as email from '../lib/email'
 import { Request, Response } from 'express'
@@ -40,7 +39,7 @@ export default async function weeklyEmail(req: Request, res: Response) {
   const users = await UserRepository.all()
 
   for (let user of users) {
-    const connections: Array<Connection> = await loadCredentialsAndExecute(fetchConnectionBirthdays) as Array<Connection>
+    const connections: Array<Connection> = await fetchConnectionBirthdays(user)
 
     const formattedBirthdayData = {
       withinSevenDays: [],

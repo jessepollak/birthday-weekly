@@ -2,7 +2,7 @@ import passport from 'passport'
 import session from 'express-session'
 import bodyParser from 'body-parser'
 import { OAuth2Strategy } from 'passport-google-oauth'
-import { UserRepository } from '../lib/models/user'
+import { UserRepository, UserGoogleCredentials } from '../lib/models/user'
 
 export function configure(router) {
   router.use(session({ 
@@ -35,7 +35,7 @@ export function configure(router) {
       googleCredentials: {
         accessToken: accessToken,
         refreshToken: refreshToken
-      }
+      } as UserGoogleCredentials
     })
     done(null, user)
   }))

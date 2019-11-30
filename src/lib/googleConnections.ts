@@ -1,6 +1,8 @@
 import moment, { Moment } from 'moment'
+import camelize from 'camelize'
 import { google } from 'googleapis'
 import { OAuth2Client } from 'googleapis-common'
+import User, { UserGoogleCredentials,UserRepository } from '../lib/models/user'
 
 export interface Connection {
   name: string,
@@ -8,8 +10,26 @@ export interface Connection {
   connection: object
 }
 
-export async function fetchConnectionBirthdays(authContext: OAuth2Client): Promise<Array<Connection>> {
-  const service = google.people({version: 'v1', auth: authContext})
+function createOAuth2Client(user: User) {
+  const client = new OAuth2Client()
+  client.setCredentials({
+    access_token: user.googleCredentials.accessToken,
+    refresh_token: user.googleCredentials.refreshToken
+  })
+
+  client.on('tokens', (tokens) => {
+    const credentials = camelize(tokens) as UserGoogleCredentials
+    UserRepository.updateUserGoogleCredentials(user, credentials)
+  })
+
+  return client
+}
+
+export async function fetchConnectionBirthdays(user: User): Promise<Array<Connection>> {
+  const service = google.people({
+    version: 'v1',
+    auth: createOAuth2Client(user)
+  })
   let nextPageToken = undefined
   let connectionsWithBirthdays: Array<Connection> = []
 

@@ -6,11 +6,11 @@ import { configure as configureDatabase } from './lib/models'
 const app = express()
 const database = configureDatabase(app)
 
-if (process.env.SCHEDULED_WORKER) {
+if (process.env.NODE_ENV === 'development' || process.env.SCHEDULED_WORKER) {
   app.use('/scheduled', createScheduledRouter())
-} else {
-  app.use('/', createRoutesRouter())
 }
+
+app.use('/', createRoutesRouter())
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
