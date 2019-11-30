@@ -1,5 +1,5 @@
 import { OAuth2Strategy } from 'passport-google-oauth'
-import BearerStrategy from 'passport-http-bearer'
+import { Strategy as BearerStrategy } from 'passport-http-bearer'
 import fetch from 'node-fetch'
 import { UserRepository, UserGoogleCredentials } from '../lib/models/user'
 
@@ -22,14 +22,14 @@ export const GoogleSchedulerBearerStrategy = new BearerStrategy(
     console.log(data)
 
     if (rawResponse.status != 200 || data.error !== undefined) {
-      return done(null, false, { message: 'Bad request' })
+      return done(null, false)
     }
 
     if (!emailToVerify || (data.email !== emailToVerify && data.email_verified == true)) {
-      return done(null, false, { message: 'Bad authentication' })
+      return done(null, false)
     }
 
-    return done(null, data, { scope: 'run_scheduled_jobs' })
+    return done(null, data, { message: 'success', scope: 'run_scheduled_jobs' })
   }
 )
 
