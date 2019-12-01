@@ -40,10 +40,15 @@ export const GoogleSchedulerBearerStrategy = new BearerStrategy(
   }
 )
 
+let callbackURL = '/auth/google/callback'
+if (process.env.BASE_URL) {
+  callbackURL = process.env.BASE_URL + callbackURL
+}
+
 export const GoogleOAuthStrategy = new OAuth2Strategy({
   clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-  callbackURL: process.env.BASE_URL + '/auth/google/callback'
+  callbackURL: callbackURL
 }, async (accessToken, refreshToken, profile, done) => {
   const user = await UserRepository.findOrCreateByGoogleProfileId(profile.id, {
     name: profile.displayName,

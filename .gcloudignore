@@ -2,3 +2,4 @@
 .gitignore
 #!include:.gitignore
 !build/**
+!client/build/**
