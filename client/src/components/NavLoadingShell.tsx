@@ -36,13 +36,7 @@ export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ child
                       <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
                     </NavDropdown>
                   ) : (
-                    <div>
-                      { userContext.initialized ? (
-                        <Nav.Link href="/auth/google">Log in</Nav.Link>
-                      ) : (
-                        <Spinner />
-                      )}
-                    </div>
+                    <Nav.Link href="/auth/google">Log in</Nav.Link>
                   ) }
                 </UserContext.Consumer>
               </Navbar.Collapse>
