@@ -20,7 +20,7 @@ COPY . ./
 
 # Compile TypeScript
 RUN npm run tsc
-RUN cd client && npm build
+RUN cd client && npm run build
 
 # Run the web service on container startup.
 CMD [ "npm", "run", "start:production" ]
