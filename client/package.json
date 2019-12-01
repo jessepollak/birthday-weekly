@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.7.0",
+    "@rest-hooks/legacy": "^0.1.0",
     "@types/bootstrap": "^4.3.1",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.14",
