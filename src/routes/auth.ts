@@ -1,5 +1,6 @@
 import express from 'express'
 import passport from 'passport'
+import { JWTManager } from '../lib/authentication'
 
 export function createRouter() {
   const router = express.Router()
@@ -22,9 +23,20 @@ export function createRouter() {
     '/google/callback',
     passport.authenticate('google-oauth', { failureRedirect: '/' }),
     (req, res) => {
+      const jwtManager = new JWTManager()
+      jwtManager.setCookie(req.user, res)
       res.redirect('/dashboard')
     }
   )
 
-  return router
+  router.get(
+    '/logout',
+    (req, res) => {
+      const jwtManager = new JWTManager()
+      jwtManager.clearCookie(res)
+      res.redirect('/')
+    }
+  )
+
+  return router 
 }
