@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css'
 import NavLoadingShell from './components/NavLoadingShell'
+import BirthdaysScreen from './screens/BirthdaysScreen'
 
 const App: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const App: React.FC = () => {
               <Button>Log in with Google</Button>
             </Route>
             <Route path="/dashboard">
-              <h1>Dashboard</h1>
+              <BirthdaysScreen />
             </Route>
           </Switch>
         </NavLoadingShell>
