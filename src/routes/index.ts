@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import express from 'express'
 import passport from 'passport'
+import path from 'path'
 import { AMPBearerStrategy, AuthenticationTypes, GoogleOAuthStrategy, GoogleSchedulerBearerStrategy, JWTStrategy } from '../lib/authentication'
 import { UserRepository } from '../lib/models/User'
 import { createRouter as createAPIRouter } from './api'
@@ -12,6 +13,10 @@ function setupAuth(app) {
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(cookieParser())
   app.use(passport.initialize())
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '..', '..', 'client/build')))
+  }
 
   passport.use(AuthenticationTypes.GoogleOauth, GoogleOAuthStrategy)
   passport.use(AuthenticationTypes.AmpBearer, AMPBearerStrategy)
@@ -36,12 +41,8 @@ export default function createExpressApp() {
   app.use('/api', createAPIRouter())
   app.use('/scheduled', createScheduledRouter())
 
-  app.get('/', (req, res) => {
-    res.send('Hello world!')
-  })
-
-  app.get('/dashboard', (req, res) => {
-    res.send('Dashboard')
+  app.get('/*', (req, res) => {
+    res.sendFile('client/build/index.html', { root: path.join(__dirname, '..', '..') })
   })
 
   return app
