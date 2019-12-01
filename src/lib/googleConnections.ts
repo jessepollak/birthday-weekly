@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment'
 import camelize from 'camelize'
 import { google } from 'googleapis'
 import { OAuth2Client } from 'googleapis-common'
-import User, { UserGoogleCredentials,UserRepository } from '../lib/models/user'
+import User, { UserGoogleCredentials,UserRepository } from '../lib/models/User'
 
 export interface Connection {
   name: string,
