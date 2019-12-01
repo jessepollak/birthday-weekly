@@ -4,24 +4,25 @@ import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
 import { NetworkErrorBoundary } from "rest-hooks"
 import { UserProvider } from '../contexts/UserContext'
 import UserResource from '../resources/UserResource'
+import useLoggedInUser, { useLoggedInUserState } from '../hooks/useLoggedInUser'
 import Spinner from './Spinner'
 
 interface NavLoadingShellProps {}
 
 const Navigation: FunctionComponent<{}> = () => {
-  const { data: user, loading } = useStatefulResource(UserResource.detailShape(), { id: 'me' })
+  const loggedInUserState = useLoggedInUserState()
 
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> Birthday Weekly</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-        { user !== undefined ? (
-          <NavDropdown title={user.email} id="basic-nav-dropdown">
+        { loggedInUserState.state === 'loggedin' ? (
+          <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
             <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
           </NavDropdown>
         ) : (
-          <div>{ !loading && (<Nav.Link href="/auth/google">Log in</Nav.Link> ) }</div>
+          <div>{ loggedInUserState.state === 'loggedout' && (<Nav.Link href="/auth/google">Log in</Nav.Link> ) }</div>
         )}
       </Navbar.Collapse>
     </Navbar>

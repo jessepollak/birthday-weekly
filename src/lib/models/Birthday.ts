@@ -1,6 +1,6 @@
-import User from './user'
-import { fetchConnectionBirthdays, Connection } from '../../lib/googleConnections'
 import moment, { Moment } from 'moment'
+import { fetchConnectionBirthdays } from '../../lib/googleConnections'
+import User from './User'
 
 function isWithinDays(numDays: number) {
   return (date: Moment) => {
