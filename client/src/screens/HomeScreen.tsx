@@ -1,6 +1,5 @@
 import React from 'react'
-import { Table, Button } from 'react-bootstrap'
-import { useResource } from 'rest-hooks'
+import { Button } from 'react-bootstrap'
 import styled from 'styled-components'
 
 const HomeScreen: React.FC = () => {

@@ -2,8 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom'
 import NavLoadingShell from './components/NavLoadingShell'
 import { useLoggedInUserState } from './hooks/useLoggedInUser'
-import HomeScreen from './screens/HomeScreen'
 import BirthdaysScreen from './screens/BirthdaysScreen'
+import HomeScreen from './screens/HomeScreen'
 
 interface IAuthenticatedRoute extends RouteProps {}
 

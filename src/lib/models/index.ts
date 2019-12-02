@@ -8,7 +8,7 @@ export async function configure(app) {
   }
 
   const db = new Firestore({ 
-    projectId: 'birthday-weekly-development',
+    projectId: process.env.GOOGLE_PROJECT_ID,
     credentials: JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('ascii'))
   })
 

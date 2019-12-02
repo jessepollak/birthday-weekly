@@ -1,9 +1,9 @@
 import React, { FunctionComponent, Suspense } from "react"
-import { Col, Container, Nav, Navbar, NavDropdown, Row, Button } from "react-bootstrap"
+import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
 import { NetworkErrorBoundary } from "rest-hooks"
+import styled from 'styled-components'
 import { UserProvider } from '../contexts/UserContext'
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
-import styled from 'styled-components'
 import Spinner from './Spinner'
 
 interface NavLoadingShellProps {}

@@ -1,6 +1,6 @@
-import { useResource, useError } from "rest-hooks";
-import UserResource from '../resources/UserResource'
 import { useStatefulResource } from "@rest-hooks/legacy";
+import { useResource } from "rest-hooks";
+import UserResource from '../resources/UserResource';
 
 export default function useLoggedInUser(): UserResource {
   return useResource(UserResource.detailShape(), { id: 'me' })
