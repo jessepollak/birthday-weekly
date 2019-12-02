@@ -1,5 +1,5 @@
 import React, { FunctionComponent, Suspense } from "react"
-import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
+import { Col, Container, Nav, Navbar, NavDropdown, Row, Button } from "react-bootstrap"
 import { NetworkErrorBoundary } from "rest-hooks"
 import { UserProvider } from '../contexts/UserContext'
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
@@ -12,35 +12,44 @@ const Navigation: FunctionComponent<{}> = () => {
   const loggedInUserState = useLoggedInUserState()
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" className="justify-content-between">
       <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> Birthday Weekly</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-        { loggedInUserState.state === 'loggedin' ? (
-          <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
-            <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
-          </NavDropdown>
-        ) : (
-          <div>{ loggedInUserState.state === 'loggedout' && (<Nav.Link href="/auth/google">Log in</Nav.Link> ) }</div>
-        )}
-      </Navbar.Collapse>
+      { loggedInUserState.state === 'loggedin' ? (
+        <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
+          <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
+        </NavDropdown>
+      ) : (
+        <div>
+          { loggedInUserState.state === 'loggedout' && (
+            <Nav.Link href="/auth/google">Log in with Google</Nav.Link>
+          )}
+        </div>
+      )}
     </Navbar>
   )
 }
+
+const SuspenseSpinner: React.FC = () => (
+  <FallbackSpinner>
+    <Spinner />
+  </FallbackSpinner>
+)
+  
+
 
 export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ children }) => {
   return (
     <UserProvider>
       <NavGridContainer>
         <Row noGutters>
-          <Col md={{ span: 6, offset: 3 }}>
+          <ContentContainer md={{ span: 8, offset: 2 }}>
             <Navigation />
-            <Suspense fallback={<Spinner />}>
+            <Suspense fallback={<SuspenseSpinner />}>
               <NetworkErrorBoundary> 
                 { children }
               </NetworkErrorBoundary>
             </Suspense>
-          </Col>
+          </ContentContainer>
         </Row>
       </NavGridContainer>
     </UserProvider>
@@ -48,8 +57,16 @@ export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ child
 }
 
 const NavGridContainer = styled(Container)`
-  padding-left: 0px;
-  padding-right: 0px;
+  padding: 0;
+`
+
+const ContentContainer = styled(Col)`
+  border: 1px solid #efefef;
+  min-height: 600px;
+`
+
+const FallbackSpinner = styled.div`
+  padding: 100px;
 `
 
 export default NavLoadingShell

@@ -1,9 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom'
-import './App.css'
 import NavLoadingShell from './components/NavLoadingShell'
 import { useLoggedInUserState } from './hooks/useLoggedInUser'
 import HomeScreen from './screens/HomeScreen'
+import BirthdaysScreen from './screens/BirthdaysScreen'
 
 interface IAuthenticatedRoute extends RouteProps {}
 
@@ -21,7 +21,7 @@ const AuthenticatedRoute : React.FC<IAuthenticatedRoute> = ({ children, ...rest 
             {loggedInUserState.state === 'loggedout' && (
                 <Redirect
                   to={{
-                    pathname: "/login",
+                    pathname: "/",
                     state: { from: location }
                   }}
                 />
@@ -41,6 +41,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/">
               <HomeScreen />
+            </Route>
+            <Route path="/birthdays">
+              <BirthdaysScreen />
             </Route>
           </Switch>
         </NavLoadingShell>
