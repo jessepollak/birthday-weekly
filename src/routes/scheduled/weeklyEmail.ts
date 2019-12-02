@@ -7,13 +7,13 @@ import Birthday, { BirthdayRepository } from '../../lib/models/Birthday'
 
 function formatForEmail(birthday: Birthday) {
   let age
-  if (birthday.date.year() === moment().year() || birthday.date.year() === 0) {
+  if (birthday.date.year() === moment.utc().year() || birthday.date.year() === 0) {
     age = "Unknown"
   } else {
-    age = moment().year() - birthday.date.year() 
+    age = moment.utc().year() - birthday.date.year() 
 
     // If in the new year, add one
-    if (birthday.date.dayOfYear() < moment().dayOfYear()) {
+    if (birthday.date.dayOfYear() < moment.utc().dayOfYear()) {
       age += 1
     }
   }

@@ -52,7 +52,7 @@ export async function fetchConnectionBirthdays(user: User): Promise<Array<Birthd
             name: person.names[0].displayName,
             image: undefined,
             source: 'google',
-            date: moment({ day, month: month - 1, year }),
+            date: moment.utc({ day, month: month - 1, year }),
           })
         }
       })

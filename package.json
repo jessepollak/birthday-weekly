@@ -7,7 +7,8 @@
     "tsc": "tsc",
     "start:development": "ts-node-dev --respawn --transpileOnly ./src/start.ts",
     "start:production": "node build/start.js",
-    "test": "echo 'no tests'",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "gcloud builds submit --tag gcr.io/birthday-weekly/birthday-weekly",
     "deploy": "gcloud run deploy birthday-weekly --image gcr.io/birthday-weekly/birthday-weekly --platform managed"
   },
@@ -28,6 +29,7 @@
     "express-session": "^1.17.0",
     "fireorm": "^0.12.1",
     "googleapis": "^45.0.0",
+    "jest-date-mock": "^1.0.7",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
@@ -46,5 +48,10 @@
   "keywords": [
     "node",
     "express"
-  ]
+  ],
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0"
+  }
 }
