@@ -26,10 +26,10 @@
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "react-script rstart",
-    "build": "react-script build",
-    "test": "react-script test",
-    "eject": "react-script eject"
+    "start": "react-scripts rstart",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
