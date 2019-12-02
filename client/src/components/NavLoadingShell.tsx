@@ -1,10 +1,9 @@
-import { useStatefulResource } from '@rest-hooks/legacy'
 import React, { FunctionComponent, Suspense } from "react"
 import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
 import { NetworkErrorBoundary } from "rest-hooks"
 import { UserProvider } from '../contexts/UserContext'
-import UserResource from '../resources/UserResource'
-import useLoggedInUser, { useLoggedInUserState } from '../hooks/useLoggedInUser'
+import { useLoggedInUserState } from '../hooks/useLoggedInUser'
+import styled from 'styled-components'
 import Spinner from './Spinner'
 
 interface NavLoadingShellProps {}
@@ -32,8 +31,8 @@ const Navigation: FunctionComponent<{}> = () => {
 export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ children }) => {
   return (
     <UserProvider>
-      <Container>
-        <Row>
+      <NavGridContainer>
+        <Row noGutters>
           <Col md={{ span: 6, offset: 3 }}>
             <Navigation />
             <Suspense fallback={<Spinner />}>
@@ -43,9 +42,14 @@ export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ child
             </Suspense>
           </Col>
         </Row>
-      </Container>
+      </NavGridContainer>
     </UserProvider>
   )
 }
+
+const NavGridContainer = styled(Container)`
+  padding-left: 0px;
+  padding-right: 0px;
+`
 
 export default NavLoadingShell

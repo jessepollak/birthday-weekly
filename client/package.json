@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.7.0",
+    "@quickbaseoss/babel-plugin-styled-components-css-namespace": "^1.0.0-rc4",
     "@rest-hooks/legacy": "^0.1.0",
     "@types/bootstrap": "^4.3.1",
     "@types/jest": "24.0.23",
@@ -12,6 +13,7 @@
     "@types/react-bootstrap": "^0.32.20",
     "@types/react-dom": "16.9.4",
     "@types/react-router-dom": "^5.1.3",
+    "@types/styled-components": "^4.4.0",
     "bootstrap": "^4.4.1",
     "http-proxy-middleware": "^0.20.0",
     "react": "^16.12.0",
@@ -20,13 +22,14 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "rest-hooks": "^3.0.0",
+    "styled-components": "^4.4.1",
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-script rstart",
+    "build": "react-script build",
+    "test": "react-script test",
+    "eject": "react-script eject"
   },
   "eslintConfig": {
     "extends": "react-app"
