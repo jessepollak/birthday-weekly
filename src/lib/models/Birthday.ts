@@ -4,7 +4,12 @@ import User from './User'
 
 export function isWithinDays(numDays: number, date: Moment) {
   const currentDate = moment.utc()
-  const dayDifference = date.clone().year(currentDate.year()).diff(currentDate, 'days')
+  const dateNormalizedToYear = date.clone().year(currentDate.year())
+  if (dateNormalizedToYear.diff(currentDate) < 0) {
+    dateNormalizedToYear.add(1, 'year')
+  }
+
+  const dayDifference = dateNormalizedToYear.diff(currentDate, 'days')
   return dayDifference <= numDays && dayDifference >= 0
 }
 
