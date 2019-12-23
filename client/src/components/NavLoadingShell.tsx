@@ -2,7 +2,6 @@ import React, { FunctionComponent, Suspense } from "react"
 import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
 import { NetworkErrorBoundary } from "rest-hooks"
 import styled from 'styled-components'
-import { UserProvider } from '../contexts/UserContext'
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
 import Spinner from './Spinner'
 
@@ -30,20 +29,18 @@ const Navigation: FunctionComponent<{}> = () => {
 
 export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ children }) => {
   return (
-    <UserProvider>
-      <NavGridContainer>
-        <Row noGutters>
-          <Col md={{ span: 6, offset: 3 }}>
-            <Navigation />
-            <Suspense fallback={<Spinner />}>
-              <NetworkErrorBoundary> 
-                { children }
-              </NetworkErrorBoundary>
-            </Suspense>
-          </Col>
-        </Row>
-      </NavGridContainer>
-    </UserProvider>
+    <NavGridContainer>
+      <Row noGutters>
+        <Col md={{ span: 6, offset: 3 }}>
+          <Navigation />
+          <Suspense fallback={<Spinner />}>
+            <NetworkErrorBoundary> 
+              { children }
+            </NetworkErrorBoundary>
+          </Suspense>
+        </Col>
+      </Row>
+    </NavGridContainer>
   )
 }
 
