@@ -12,44 +12,35 @@ const Navigation: FunctionComponent<{}> = () => {
   const loggedInUserState = useLoggedInUserState()
 
   return (
-    <Navbar bg="light" className="justify-content-between">
+    <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> Birthday Weekly</Navbar.Brand>
-      { loggedInUserState.state === 'loggedin' ? (
-        <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
-          <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
-        </NavDropdown>
-      ) : (
-        <div>
-          { loggedInUserState.state === 'loggedout' && (
-            <Nav.Link href="/auth/google">Log in with Google</Nav.Link>
-          )}
-        </div>
-      )}
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+        { loggedInUserState.state === 'loggedin' ? (
+          <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
+            <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
+          </NavDropdown>
+        ) : (
+          <div>{ loggedInUserState.state === 'loggedout' && (<Nav.Link href="/auth/google">Log in</Nav.Link> ) }</div>
+        )}
+      </Navbar.Collapse>
     </Navbar>
   )
 }
-
-const SuspenseSpinner: React.FC = () => (
-  <FallbackSpinner>
-    <Spinner />
-  </FallbackSpinner>
-)
-  
-
 
 export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ children }) => {
   return (
     <UserProvider>
       <NavGridContainer>
         <Row noGutters>
-          <ContentContainer md={{ span: 8, offset: 2 }}>
+          <Col md={{ span: 6, offset: 3 }}>
             <Navigation />
-            <Suspense fallback={<SuspenseSpinner />}>
+            <Suspense fallback={<Spinner />}>
               <NetworkErrorBoundary> 
                 { children }
               </NetworkErrorBoundary>
             </Suspense>
-          </ContentContainer>
+          </Col>
         </Row>
       </NavGridContainer>
     </UserProvider>
@@ -57,16 +48,8 @@ export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ child
 }
 
 const NavGridContainer = styled(Container)`
-  padding: 0;
-`
-
-const ContentContainer = styled(Col)`
-  border: 1px solid #efefef;
-  min-height: 600px;
-`
-
-const FallbackSpinner = styled.div`
-  padding: 100px;
+  padding-left: 0px;
+  padding-right: 0px;
 `
 
 export default NavLoadingShell

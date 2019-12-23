@@ -25,7 +25,7 @@ export function createRouter() {
     (req, res) => {
       const jwtManager = new JWTManager()
       jwtManager.setCookie(req.user, res)
-      res.redirect('/birthdays')
+      res.redirect('/dashboard')
     }
   )
 
