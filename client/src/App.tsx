@@ -4,6 +4,7 @@ import './App.css'
 import NavLoadingShell from './components/NavLoadingShell'
 import { useLoggedInUserState } from './hooks/useLoggedInUser'
 import HomeScreen from './screens/HomeScreen'
+import BirthdaysScreen from './screens/BirthdaysScreen'
 
 interface IAuthenticatedRoute extends RouteProps {}
 
@@ -41,6 +42,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/">
               <HomeScreen />
+            </Route>
+            <Route exact path="/birthdays">
+              <BirthdaysScreen />
             </Route>
           </Switch>
         </NavLoadingShell>

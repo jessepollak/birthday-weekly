@@ -1,10 +1,18 @@
 import express from "express";
-import passport from "passport"
+import { BirthdayPreferencesRepository } from "../../lib/models/BirthdayPreferences";
+import Birthday, { BirthdayRepository } from "../../lib/models/Birthday";
 import User from "../../lib/models/User";
-import { BirthdayRepository } from "../../lib/models/Birthday"
 
 export default function createRouter() {
   const router = express.Router()
+
+  router.put('/:id/', async (req, res) => {
+    const preferences = {
+      ignore: req.body.preferences.ignore || false
+    }
+
+    return res.json(await BirthdayPreferencesRepository.update(req.user, req.body as Birthday, preferences))
+  })
 
   router.get('/upcoming', async (req, res) => {
     const user = req.user as User

@@ -6,6 +6,7 @@ import { AuthenticationTypes } from "../../lib/authentication"
 
 export function createRouter() {
   const router = express.Router()
+  router.use(express.json())
 
   router.use(passport.authenticate(AuthenticationTypes.JWT, { session: false }))
   router.use('/users', createUserRouter())

@@ -34,6 +34,10 @@ export async function fetchConnectionBirthdays(user: User): Promise<Array<Birthd
   let nextPageToken = undefined
   let birthdays: Array<Birthday> = []
 
+  const normalizeId = function(resourceName) {
+    return resourceName.match(/people\/(\w+)/)[1]
+  }
+
   try {
     do {
       let { data: { connections, nextPageToken: _nextPageToken } } = await service.people.connections.list({
@@ -48,7 +52,7 @@ export async function fetchConnectionBirthdays(user: User): Promise<Array<Birthd
         if (person.birthdays && person.birthdays.length > 0) {
           const { day, month, year } = person.birthdays[0].date
           return new Birthday({
-            id: person.resourceName,
+            id: normalizeId(person.resourceName),
             name: person.names[0].displayName,
             image: undefined,
             source: 'google',

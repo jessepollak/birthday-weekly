@@ -1,33 +1,27 @@
 import moment, { Moment } from 'moment'
 import { fetchConnectionBirthdays } from '../../lib/googleConnections'
 import User from './User'
+import BirthdayPreferences, { BirthdayPreferencesRepository } from './BirthdayPreferences'
 
-export function isWithinDays(numDays: number, date: Moment) {
+export function deltaFromCurrentDateInDays(date: Moment) {
   const currentDate = moment.utc()
   const dateNormalizedToYear = date.clone().year(currentDate.year())
   if (dateNormalizedToYear.diff(currentDate) < 0) {
     dateNormalizedToYear.add(1, 'year')
   }
 
-  const dayDifference = dateNormalizedToYear.diff(currentDate, 'days')
-  return dayDifference <= numDays && dayDifference >= 0
+  return dateNormalizedToYear.diff(currentDate, 'days')
 }
 
 export class BirthdayRepository {
   static async getUpcomingForUser(user: User): Promise<{ withinSevenDays, withinThirtyDays }> {
-    const birthdays = await fetchConnectionBirthdays(user)
+    let birthdays = await fetchConnectionBirthdays(user)
+    birthdays = await BirthdayPreferencesRepository.hydrateBirthdaysWithPreferences(user, birthdays)
+    const birthdaysWithDelta = birthdays.map((b) => { return { birthday: b, delta: deltaFromCurrentDateInDays(b.date) } })
 
     const formattedBirthdayData = {
-      withinSevenDays: [],
-      withinThirtyDays: []
-    }
-
-    for (let birthday of birthdays) {
-      if (isWithinDays(7, birthday.date)) {
-        formattedBirthdayData.withinSevenDays.push(birthday)
-      } else if (isWithinDays(30, birthday.date)) {
-        formattedBirthdayData.withinThirtyDays.push(birthday)
-      }
+      withinSevenDays: birthdaysWithDelta.filter((b) => b.delta <= 7).sort((a, b) => a.delta - b.delta).map(b => b.birthday),
+      withinThirtyDays: birthdaysWithDelta.filter((b) => b.delta > 7 && b.delta <= 30).sort((a, b) => a.delta - b.delta).map(b => b.birthday),
     }
 
     return formattedBirthdayData
@@ -40,6 +34,7 @@ export default class Birthday {
   image: string | undefined;
   source: "google" = "google";
   date: Moment;
+  preferences: BirthdayPreferences | undefined;
 
   constructor({ id, name, image, source, date }) {
     this.id = id
