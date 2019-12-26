@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
-import { Table, ButtonGroup, Button } from 'react-bootstrap'
-import moment from 'moment'
-import { useResource, useFetcher } from 'rest-hooks'
+import { Button, ButtonGroup, Table } from 'react-bootstrap'
+import { useFetcher, useResource } from 'rest-hooks'
+import styles from './BirthdaysScreen.module.css'
 import BirthdayResource from '../resources/BirthdayResource'
 
 const BirthdayRow: React.FC<{ birthday: BirthdayResource }> = ({ birthday }) => {
+  let ignoreText
   const update = useFetcher(BirthdayResource.updateShape())
 
+  if (birthday.preferences?.ignore) {
+    ignoreText = '🎂 Unignore'
+  } else {
+    ignoreText = '🚫 Ignore'
+  }
+
   return (
-    <tr key={birthday.id}>
+    <tr key={birthday.id} className={birthday.preferences?.ignore ? styles.birthdayRowIgnored : undefined}>
       <td>{ birthday.name }</td>
       <td>{ birthday.birthdayMoment().format('MMMM Do') }</td>
       <td>{ birthday.formattedAge() }</td>
       <td>
         <ButtonGroup>
-          <Button onClick={() => update({ id: birthday.id } , { ...birthday, preferences: { ...birthday.preferences, ignore: true }})}>Ignore</Button>
+          <Button onClick={() => update({ id: birthday.id } , { ...birthday, preferences: { ...birthday.preferences, ignore: !birthday.preferences?.ignore }})}>{ ignoreText }</Button>
         </ButtonGroup>
       </td>
     </tr>

@@ -7,11 +7,16 @@ export default function createRouter() {
   const router = express.Router()
 
   router.put('/:id/', async (req, res) => {
+    const birthday = req.body as Birthday
+
     const preferences = {
-      ignore: req.body.preferences.ignore || false
+      ignore: birthday.preferences.ignore || false
     }
 
-    return res.json(await BirthdayPreferencesRepository.update(req.user, req.body as Birthday, preferences))
+    const updatedPreference = await BirthdayPreferencesRepository.update(req.user, birthday, preferences)
+    birthday.preferences = updatedPreference
+
+    return res.json(birthday)
   })
 
   router.get('/upcoming', async (req, res) => {
