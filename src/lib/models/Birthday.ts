@@ -14,9 +14,14 @@ export function deltaFromCurrentDateInDays(date: Moment) {
 }
 
 export class BirthdayRepository {
-  static async getUpcomingForUser(user: User): Promise<{ withinSevenDays, withinThirtyDays }> {
+  static async getUpcomingForUser(user: User, options = { includeIgnored: false }): Promise<{ withinSevenDays, withinThirtyDays }> {
     let birthdays = await fetchConnectionBirthdays(user)
     birthdays = await BirthdayPreferencesRepository.hydrateBirthdaysWithPreferences(user, birthdays)
+
+    if (!options.includeIgnored) {
+      birthdays = birthdays.filter((b) => !b.preferences.ignore)
+    }
+
     const birthdaysWithDelta = birthdays.map((b) => { return { birthday: b, delta: deltaFromCurrentDateInDays(b.date) } })
 
     const formattedBirthdayData = {

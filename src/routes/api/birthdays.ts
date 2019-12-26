@@ -21,7 +21,7 @@ export default function createRouter() {
 
   router.get('/upcoming', async (req, res) => {
     const user = req.user as User
-    return res.json(await BirthdayRepository.getUpcomingForUser(user))
+    return res.json(await BirthdayRepository.getUpcomingForUser(user, { includeIgnored: true }))
   })
 
   return router
