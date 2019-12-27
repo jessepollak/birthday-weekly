@@ -1,6 +1,6 @@
 import React, { FunctionComponent, Suspense } from "react"
 import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
-import { NetworkErrorBoundary, useFetcher } from "rest-hooks"
+import { NetworkErrorBoundary, useInvalidator } from "rest-hooks"
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
 import styles from './NavLoadingShell.module.css'
 import Spinner from './Spinner'
@@ -9,6 +9,7 @@ interface NavLoadingShellProps {}
 
 const Navigation: FunctionComponent<{}> = () => {
   const loggedInUserState = useLoggedInUserState()
+  const refresh = useInvalidator(ContactResource.upcomingBirthdaysShape())
 
   return (
     <Navbar bg="light" expand="lg">
@@ -18,6 +19,7 @@ const Navigation: FunctionComponent<{}> = () => {
         { loggedInUserState.state === 'loggedin' ? (
           <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
             <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => refresh({ update: true })}>Refresh</NavDropdown.Item>
           </NavDropdown>
         ) : (
           <div>{ loggedInUserState.state === 'loggedout' && (<Nav.Link href="/auth/google">Log in</Nav.Link> ) }</div>

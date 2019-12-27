@@ -48,9 +48,9 @@ const App: React.FC = () => {
                 <BirthdaysScreen />
               ) : <HomeScreen />}
             </Route>
-            <Route exact path="/birthdays">
+            <AuthenticatedRoute exact path="/birthdays">
               <BirthdaysScreen />
-            </Route>
+            </AuthenticatedRoute>
           </Switch>
         </NavLoadingShell>
       </div>

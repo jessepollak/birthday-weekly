@@ -34,6 +34,12 @@ export default class ContactResource extends BaseResource {
     return [firstName, ...rest.map((n) => n[0] + ".")].join(" ")
   }
 
+  static getFetchOptions() {
+    return {
+      invalidIfStale: true
+    }
+  }
+
   static upcomingBirthdaysShape<T extends typeof BaseResource>(this: T) {
     return {
       ...this.listShape(),

@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ButtonGroup, Table } from 'react-bootstrap'
 import { useFetcher, useResource } from 'rest-hooks'
-import styles from './BirthdaysScreen.module.css'
-import ContactResource from '../resources/ContactResource'
 import Button from '../components/Button'
+import ContactResource from '../resources/ContactResource'
+import styles from './BirthdaysScreen.module.css'
 
 const BirthdayRow: React.FC<{ contact: ContactResource }> = ({ contact }) => {
   const [isSubmittingRequest, setIsSubmittingRequest] = React.useState(false)
@@ -83,15 +83,9 @@ const BirthdayTable: React.FC<{ contacts: ContactResource[] }> = ({ contacts }) 
 
 const BirthdaysScreen: React.FC = () => {
   let contacts = useResource(ContactResource.upcomingBirthdaysShape(), {})
-  const refresh = useFetcher(ContactResource.upcomingBirthdaysShape())
-
-  const onRefresh = async () => {
-    contacts = await refresh({ update: true }, undefined)
-  }
 
   return (
     <div>
-      <Button isLoading={false} onClick={onRefresh}>Refresh</Button>
       <p className={styles.sectionHeader}>Within the next 7 days...</p>
       <BirthdayTable contacts={contacts.withinSevenDays} />
       <p className={styles.sectionHeader}>Within the next 30 days...</p>

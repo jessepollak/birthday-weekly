@@ -1,5 +1,5 @@
 import React from 'react'
-import { Spinner as BootstrapSpinner, SpinnerProps } from 'react-bootstrap'
+import { Spinner as BootstrapSpinner } from 'react-bootstrap'
 
 export interface ISpinner {
   size?: "sm" | undefined
