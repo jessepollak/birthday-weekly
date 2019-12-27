@@ -1,12 +1,12 @@
 import moment, { Moment } from 'moment'
 import BaseResource from './BaseResource';
 
-export default class BirthdayResource extends BaseResource {
+export default class ContactResource extends BaseResource {
   readonly id: string | undefined = undefined;
   readonly name: string = '';
   readonly image: string = '';
   readonly source: string = '';
-  readonly date: Date = new Date();
+  readonly birthday: Date = new Date();
 
   readonly preferences: {
     ignore: boolean
@@ -17,7 +17,7 @@ export default class BirthdayResource extends BaseResource {
   }
 
   public birthdayMoment(): Moment {
-    return moment.utc(this.date)
+    return moment.utc(this.birthday)
   }
 
   public formattedAge(): string {
@@ -34,7 +34,7 @@ export default class BirthdayResource extends BaseResource {
     return [firstName, ...rest.map((n) => n[0] + ".")].join(" ")
   }
 
-  static upcomingShape<T extends typeof BaseResource>(this: T) {
+  static upcomingBirthdaysShape<T extends typeof BaseResource>(this: T) {
     return {
       ...this.listShape(),
       schema: {
@@ -50,5 +50,5 @@ export default class BirthdayResource extends BaseResource {
     }
   }
 
-  static urlRoot = '/api/birthdays/';
+  static urlRoot = '/api/contacts/';
 }

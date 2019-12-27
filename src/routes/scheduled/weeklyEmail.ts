@@ -1,27 +1,27 @@
 import { Request, Response } from 'express'
 import moment, { Moment } from 'moment'
 import * as email from '../../lib/email'
-import {fetchConnectionBirthdays } from '../../lib/googleConnections'
 import { UserRepository } from '../../lib/models/User'
-import Birthday, { BirthdayRepository } from '../../lib/models/Birthday'
+import Contact, { ContactRepository } from '../../lib/models/Contact'
 
-function formatForEmail(birthday: Birthday) {
+function formatForEmail(contact: Contact) {
   let age
-  if (birthday.date.year() === moment.utc().year() || birthday.date.year() === 0) {
+  const birthday = moment.utc(contact.birthday)
+  if (birthday.year() === moment.utc().year() || birthday.year() === 0) {
     age = "Unknown"
   } else {
-    age = moment.utc().year() - birthday.date.year() 
+    age = moment.utc().year() - birthday.year() 
 
     // If in the new year, add one
-    if (birthday.date.dayOfYear() < moment.utc().dayOfYear()) {
+    if (birthday.dayOfYear() < moment.utc().dayOfYear()) {
       age += 1
     }
   }
 
   return {
-    name: birthday.name,
+    name: contact.name,
     age: age,
-    birthday: birthday.date.format("MMMM Do (YYYY)")
+    contact: birthday.format("MMMM Do (YYYY)")
   }
 }
 
@@ -31,10 +31,10 @@ export default async function weeklyEmail(req: Request, res: Response) {
   const users = await UserRepository.all()
 
   for (let user of users) {
-    const upcomingBirthdays = await BirthdayRepository.getUpcomingForUser(user)
+    const upcomingContacts = await ContactRepository.fetchContactsWithUpcomingBirthdays(user)
     email.sendWeeklyEmail(user.email, {
-      withinSevenDays: upcomingBirthdays.withinSevenDays.map(formatForEmail),
-      withinThirtyDays: upcomingBirthdays.withinThirtyDays.map(formatForEmail)
+      withinSevenDays: upcomingContacts.withinSevenDays.map(formatForEmail),
+      withinThirtyDays: upcomingContacts.withinThirtyDays.map(formatForEmail)
     })
   }
 

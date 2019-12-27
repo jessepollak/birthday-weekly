@@ -1,6 +1,6 @@
 import express from 'express'
 import createUserRouter from './users'
-import createBirthdayRouter from './birthdays'
+import createContactRouter from './contacts'
 import passport from 'passport'
 import { AuthenticationTypes } from "../../lib/authentication"
 
@@ -10,7 +10,7 @@ export function createRouter() {
 
   router.use(passport.authenticate(AuthenticationTypes.JWT, { session: false }))
   router.use('/users', createUserRouter())
-  router.use('/birthdays', createBirthdayRouter())
+  router.use('/contacts', createContactRouter())
 
   return router
 }

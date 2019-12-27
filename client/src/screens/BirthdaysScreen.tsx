@@ -2,17 +2,17 @@ import React, { useState, useRef, useEffect } from 'react'
 import { ButtonGroup, Table } from 'react-bootstrap'
 import { useFetcher, useResource } from 'rest-hooks'
 import styles from './BirthdaysScreen.module.css'
-import BirthdayResource from '../resources/BirthdayResource'
+import ContactResource from '../resources/ContactResource'
 import Button from '../components/Button'
 
-const BirthdayRow: React.FC<{ birthday: BirthdayResource }> = ({ birthday }) => {
+const BirthdayRow: React.FC<{ contact: ContactResource }> = ({ contact }) => {
   const [isSubmittingRequest, setIsSubmittingRequest] = React.useState(false)
   let ignoreText
-  const update = useFetcher(BirthdayResource.updateShape())
+  const update = useFetcher(ContactResource.updateShape())
 
   const onIgnoreClick = () => {
     setIsSubmittingRequest(true)
-    update({ id: birthday.id } , { ...birthday, preferences: { ...birthday.preferences, ignore: !birthday.preferences?.ignore }}).then(() => {
+    update({ id: contact.id } , { ...contact, preferences: { ...contact.preferences, ignore: !contact.preferences?.ignore }}).then(() => {
       if (mountedRef.current) setIsSubmittingRequest(false)
     })
   }
@@ -20,17 +20,17 @@ const BirthdayRow: React.FC<{ birthday: BirthdayResource }> = ({ birthday }) => 
   const mountedRef = useRef(true);
   useEffect(() => () => {mountedRef.current = false;},[]);
 
-  if (birthday.preferences?.ignore) {
+  if (contact.preferences?.ignore) {
     ignoreText = '🎂 Unignore'
   } else {
     ignoreText = '🚫 Ignore'
   }
 
   return (
-    <tr key={birthday.id} className={birthday.preferences?.ignore ? styles.birthdayRowIgnored : undefined}>
-      <td>{ birthday.formattedName() }</td>
-      <td>{ birthday.birthdayMoment().format('MMM Do') }</td>
-      <td>{ birthday.formattedAge() }</td>
+    <tr key={contact.id} className={contact.preferences?.ignore ? styles.birthdayRowIgnored : undefined}>
+      <td>{ contact.formattedName() }</td>
+      <td>{ contact.birthdayMoment().format('MMM Do') }</td>
+      <td>{ contact.formattedAge() }</td>
       <td>
         <ButtonGroup>
           <Button isLoading={isSubmittingRequest} onClick={onIgnoreClick}>{ ignoreText }</Button>
@@ -40,18 +40,18 @@ const BirthdayRow: React.FC<{ birthday: BirthdayResource }> = ({ birthday }) => 
   )
 }
 
-const BirthdayTable: React.FC<{ birthdays: BirthdayResource[] }> = ({ birthdays }) => {
+const BirthdayTable: React.FC<{ contacts: ContactResource[] }> = ({ contacts }) => {
   const [showIgnored, setShowIgnored] = useState(false)
 
-  const ignored = birthdays.filter((b) => b.preferences?.ignore)
-  const notIgnored = birthdays.filter((b) => !b.preferences?.ignore)
+  const ignored = contacts.filter((b) => b.preferences?.ignore)
+  const notIgnored = contacts.filter((b) => !b.preferences?.ignore)
   let toShow, text
 
   if (showIgnored) {
-    text = "Hide hidden birthdays..."
+    text = "Hide hidden contacts..."
     toShow = notIgnored.concat(ignored)
   } else {
-    text = "Show hidden birthdays..."
+    text = "Show hidden contacts..."
     toShow = notIgnored
   }
 
@@ -68,7 +68,7 @@ const BirthdayTable: React.FC<{ birthdays: BirthdayResource[] }> = ({ birthdays 
       <tbody>
         { toShow.map((b, i) => {
           return (
-            <BirthdayRow birthday={b} key={b.id}/>
+            <BirthdayRow contact={b} key={b.id}/>
           )
         })}
         <tr className={styles.showHidden}>
@@ -82,14 +82,14 @@ const BirthdayTable: React.FC<{ birthdays: BirthdayResource[] }> = ({ birthdays 
 }
 
 const BirthdaysScreen: React.FC = () => {
-  const birthdays = useResource(BirthdayResource.upcomingShape(), {})
+  const contacts = useResource(ContactResource.upcomingBirthdaysShape(), {})
 
   return (
     <div>
       <p className={styles.sectionHeader}>Within the next 7 days...</p>
-      <BirthdayTable birthdays={birthdays.withinSevenDays} />
+      <BirthdayTable contacts={contacts.withinSevenDays} />
       <p className={styles.sectionHeader}>Within the next 30 days...</p>
-      <BirthdayTable birthdays={birthdays.withinThirtyDays} />
+      <BirthdayTable contacts={contacts.withinThirtyDays} />
     </div>
   )
 }
