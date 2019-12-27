@@ -30,8 +30,8 @@ export default class BirthdayResource extends BaseResource {
   }
 
   public formattedName(): string {
-    const [firstName, ...rest] = " ".split(this.name)
-    return [firstName, ...rest.map((n) => n[0])].join(" ")
+    const [firstName, ...rest] = this.name.split(" ")
+    return [firstName, ...rest.map((n) => n[0] + ".")].join(" ")
   }
 
   static upcomingShape<T extends typeof BaseResource>(this: T) {

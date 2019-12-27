@@ -29,7 +29,7 @@ const BirthdayRow: React.FC<{ birthday: BirthdayResource }> = ({ birthday }) => 
   return (
     <tr key={birthday.id} className={birthday.preferences?.ignore ? styles.birthdayRowIgnored : undefined}>
       <td>{ birthday.formattedName() }</td>
-      <td>{ birthday.birthdayMoment().format('MMMM Do') }</td>
+      <td>{ birthday.birthdayMoment().format('MMM Do') }</td>
       <td>{ birthday.formattedAge() }</td>
       <td>
         <ButtonGroup>
