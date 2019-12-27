@@ -34,14 +34,19 @@ const AuthenticatedRoute : React.FC<IAuthenticatedRoute> = ({ children, ...rest 
   )
 }
 
+
 const App: React.FC = () => {
+  const loggedInUserState = useLoggedInUserState()
+
   return (
     <Router>
       <div className="App">
         <NavLoadingShell>
           <Switch>
             <Route exact path="/">
-              <HomeScreen />
+              { loggedInUserState.state === 'loggedin' ? (
+                <BirthdaysScreen />
+              ) : <HomeScreen />}
             </Route>
             <Route exact path="/birthdays">
               <BirthdaysScreen />

@@ -1,9 +1,13 @@
 import React from 'react'
-import { Spinner as BootstrapSpinner } from 'react-bootstrap'
+import { Spinner as BootstrapSpinner, SpinnerProps } from 'react-bootstrap'
 
-export const Spinner: React.FC = () => {
+export interface ISpinner {
+  size?: "sm" | undefined
+}
+
+export const Spinner: React.FC<ISpinner> = ({ size }) => {
   return (
-    <BootstrapSpinner animation="border" role="status">
+    <BootstrapSpinner animation="border" role="status" size={size}>
       <span className="sr-only">Loading...</span>
     </BootstrapSpinner>
   )

@@ -1,3 +1,29 @@
+.table.table {
+  margin-bottom: 0;
+}
+
 .birthdayRowIgnored {
   opacity: 0.5;
+}
+
+.sectionHeader {
+  margin-bottom: 0;
+  text-align: center;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px 0;
+  border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
+}
+
+.showHidden a {
+  color: #aaa;
+}
+
+.showHidden a:hover {
+  color: #999;
+}
+
+.showHidden.showHidden td {
+  padding: 5px 10px;
 }

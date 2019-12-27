@@ -25,8 +25,13 @@ export default class BirthdayResource extends BaseResource {
     if (yearDiff !== 0) {
       return `${yearDiff + 1}`
     } else {
-      return 'Unknown'
+      return 'NA'
     }
+  }
+
+  public formattedName(): string {
+    const [firstName, ...rest] = " ".split(this.name)
+    return [firstName, ...rest.map((n) => n[0])].join(" ")
   }
 
   static upcomingShape<T extends typeof BaseResource>(this: T) {

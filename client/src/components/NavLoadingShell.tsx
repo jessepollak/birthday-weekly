@@ -1,9 +1,9 @@
 import React, { FunctionComponent, Suspense } from "react"
 import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
 import { NetworkErrorBoundary } from "rest-hooks"
-import styled from 'styled-components'
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
 import Spinner from './Spinner'
+import styles from './NavLoadingShell.module.css'
 
 interface NavLoadingShellProps {}
 
@@ -27,26 +27,29 @@ const Navigation: FunctionComponent<{}> = () => {
   )
 }
 
+const MainSpinner: React.FC = () => {
+  return (
+    <div className={styles.spinnerContainer}>
+      <Spinner />
+    </div>
+  )
+}
+
 export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ children }) => {
   return (
-    <NavGridContainer>
+    <Container className={styles.container}>
       <Row noGutters>
         <Col md={{ span: 6, offset: 3 }}>
           <Navigation />
-          <Suspense fallback={<Spinner />}>
+          <Suspense fallback={<MainSpinner />}>
             <NetworkErrorBoundary> 
               { children }
             </NetworkErrorBoundary>
           </Suspense>
         </Col>
       </Row>
-    </NavGridContainer>
+    </Container>
   )
 }
-
-const NavGridContainer = styled(Container)`
-  padding-left: 0px;
-  padding-right: 0px;
-`
 
 export default NavLoadingShell
