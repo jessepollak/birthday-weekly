@@ -1,10 +1,10 @@
 import React, { FunctionComponent, Suspense } from "react"
 import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
-import { NetworkErrorBoundary } from "rest-hooks"
+import { NetworkErrorBoundary, useFetcher } from "rest-hooks"
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
-import Spinner from './Spinner'
 import styles from './NavLoadingShell.module.css'
-
+import Spinner from './Spinner'
+import ContactResource from "../resources/ContactResource"
 interface NavLoadingShellProps {}
 
 const Navigation: FunctionComponent<{}> = () => {

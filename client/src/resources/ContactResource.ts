@@ -44,8 +44,13 @@ export default class ContactResource extends BaseResource {
       getFetchKey: () => {
         return '/upcoming/';
       },
-      fetch: (params: {}, body?: Readonly<object | string>) => {
-        return this.fetch('get', `${this.listUrl()}/upcoming/`)
+      fetch: (params: { update: boolean }, body?: Readonly<object | string>) => {
+        let url = `${this.listUrl()}upcoming`
+        if (params.update) {
+          url += '?update=true'
+        }
+
+        return this.fetch('get', url)
       },
     }
   }

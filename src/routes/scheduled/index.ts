@@ -1,9 +1,6 @@
 import express from 'express'
-import passport from 'passport'
-import BearerStrategy from 'passport-http-bearer'
-import bodyParser from 'body-parser'
-import fetch from 'node-fetch'
 import weeklyEmail from './weeklyEmail'
+import passport from 'passport'
 
 export function createRouter() {
   const router = express.Router()

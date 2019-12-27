@@ -82,10 +82,16 @@ const BirthdayTable: React.FC<{ contacts: ContactResource[] }> = ({ contacts }) 
 }
 
 const BirthdaysScreen: React.FC = () => {
-  const contacts = useResource(ContactResource.upcomingBirthdaysShape(), {})
+  let contacts = useResource(ContactResource.upcomingBirthdaysShape(), {})
+  const refresh = useFetcher(ContactResource.upcomingBirthdaysShape())
+
+  const onRefresh = async () => {
+    contacts = await refresh({ update: true }, undefined)
+  }
 
   return (
     <div>
+      <Button isLoading={false} onClick={onRefresh}>Refresh</Button>
       <p className={styles.sectionHeader}>Within the next 7 days...</p>
       <BirthdayTable contacts={contacts.withinSevenDays} />
       <p className={styles.sectionHeader}>Within the next 30 days...</p>

@@ -12,7 +12,8 @@ export default function createRouter() {
 
   router.get('/upcoming', async (req, res) => {
     const user = req.user as User
-    return res.json(await ContactRepository.fetchContactsWithUpcomingBirthdays(user, { includeIgnored: true, update: true }))
+    const update = req.query.update === 'true'
+    return res.json(await ContactRepository.fetchContactsWithUpcomingBirthdays(user, { includeIgnored: true, update }))
   })
 
   return router
