@@ -30,8 +30,9 @@ export default class ContactResource extends BaseResource {
   }
 
   public formattedName(): string {
-    const [firstName, ...rest] = this.name.split(" ")
-    return [firstName, ...rest.map((n) => n[0] + ".")].join(" ")
+    return this.name
+    // const [firstName, ...rest] = this.name.split(" ")
+    // return [firstName, ...rest.map((n) => n[0] + ".")].join(" ")
   }
 
   static getFetchOptions() {
@@ -50,13 +51,23 @@ export default class ContactResource extends BaseResource {
       getFetchKey: () => {
         return '/upcoming/';
       },
-      fetch: (params: { update: boolean }, body?: Readonly<object | string>) => {
+      fetch: (params: {}, body?: Readonly<object | string>) => {
         let url = `${this.listUrl()}upcoming`
-        if (params.update) {
-          url += '?update=true'
-        }
-
         return this.fetch('get', url)
+      },
+    }
+  }
+
+  static refreshState<T extends typeof BaseResource>(this: T) {
+    return {
+      ...this.createShape(),
+      schema: {},
+      getFetchKey: () => {
+        return '/refresh/';
+      },
+      fetch: (params: {}, body?: Readonly<object | string>) => {
+        let url = `${this.listUrl()}refresh`
+        return this.fetch('post', url)
       },
     }
   }

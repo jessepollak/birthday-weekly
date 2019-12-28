@@ -21,9 +21,9 @@ const BirthdayRow: React.FC<{ contact: ContactResource }> = ({ contact }) => {
   useEffect(() => () => {mountedRef.current = false;},[]);
 
   if (contact.preferences?.ignore) {
-    ignoreText = '🎂 Unignore'
+    ignoreText = '🎂'
   } else {
-    ignoreText = '🚫 Ignore'
+    ignoreText = '🚫'
   }
 
   return (

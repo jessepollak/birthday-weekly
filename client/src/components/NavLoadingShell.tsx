@@ -1,30 +1,42 @@
 import React, { FunctionComponent, Suspense } from "react"
-import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"
-import { NetworkErrorBoundary, useInvalidator } from "rest-hooks"
+import { Button, Col, Container, Dropdown, DropdownButton, Navbar, Row } from "react-bootstrap"
+import { NetworkErrorBoundary, useFetcher, useInvalidator } from "rest-hooks"
 import { useLoggedInUserState } from '../hooks/useLoggedInUser'
+import ContactResource from "../resources/ContactResource"
 import styles from './NavLoadingShell.module.css'
 import Spinner from './Spinner'
-import ContactResource from "../resources/ContactResource"
 interface NavLoadingShellProps {}
 
 const Navigation: FunctionComponent<{}> = () => {
   const loggedInUserState = useLoggedInUserState()
-  const refresh = useInvalidator(ContactResource.upcomingBirthdaysShape())
+
+  const refresh = useFetcher(ContactResource.refreshState())
+  const clearCache = useInvalidator(ContactResource.upcomingBirthdaysShape())
+
+  const onRefresh = async () => {
+    await refresh({}, {})
+    clearCache({})
+  }
 
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> Birthday Weekly</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-        { loggedInUserState.state === 'loggedin' ? (
-          <NavDropdown title={loggedInUserState.user.email} id="basic-nav-dropdown">
-            <NavDropdown.Item href="/auth/logout">Log out</NavDropdown.Item>
-            <NavDropdown.Item onClick={() => refresh({ update: true })}>Refresh</NavDropdown.Item>
-          </NavDropdown>
-        ) : (
-          <div>{ loggedInUserState.state === 'loggedout' && (<Nav.Link href="/auth/google">Log in</Nav.Link> ) }</div>
-        )}
-      </Navbar.Collapse>
+      { loggedInUserState.state === 'loggedin' ? (
+        <Container className="justify-content-end">
+          <DropdownButton 
+            title={loggedInUserState.user.email} 
+            id="nav-dropdown" 
+            alignRight
+            variant="secondary"
+            className="justify-content-end"
+          >
+            <Dropdown.Item onClick={onRefresh}>♻️ Refresh contacts</Dropdown.Item>
+            <Dropdown.Item href="/auth/logout">Log out</Dropdown.Item>
+          </DropdownButton>
+        </Container>
+      ) : (
+        <div>{ loggedInUserState.state === 'loggedout' && (<Button href="/auth/google">Log in</Button> ) }</div>
+      )}
     </Navbar>
   )
 }
