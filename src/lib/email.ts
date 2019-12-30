@@ -1,16 +1,65 @@
+import EmailTemplates from 'email-templates'
 import sendgrid from '@sendgrid/mail'
+import mjml2html from 'mjml'
 
-export function configure(apiKey: string) {
-  sendgrid.setApiKey(apiKey)
+
+class Email {
+  templater: EmailTemplates
+
+  configure(apiKey: string) {
+    sendgrid.setApiKey(apiKey)
+
+    this.templater = new EmailTemplates({
+      views: {
+        root: 'src/emails',
+        options: {
+          extension: 'ejs'
+        },
+        preview: {
+          open: false
+        }
+      }
+    })
+  }
+
+  async render(template, variables) {
+    const rendered = await  this.templater.renderAll(template, variables)
+    const mjml = mjml2html(rendered.html)
+
+    rendered.html = mjml.html
+
+    if (mjml.errors?.length) {
+      console.error(mjml.errors)
+    }
+
+    return rendered
+  }
+
+  async send(to: string, subject: string, template: string, variables) {
+    const rendered = await this.render(template, variables)
+
+    sendgrid.send({
+      to,
+      from: 'birthdayweekly@pollak.io',
+      subject,
+      html: rendered.html,
+      text: rendered.text
+    })
+  }
+
+  async sendWeeklyEmail(to: string, formattedBirthdayData) {
+    return this.send(
+      to,
+      'Upcoming birthdays...',
+      'weekly',
+      {
+        withinSevenDays: formattedBirthdayData.withinSevenDays,
+        withinThirtyDays: formattedBirthdayData.withinThirtyDays,
+        manageURL: `${process.env.BASE_URL}/`
+      }
+    )
+  }
 }
 
-export async function sendWeeklyEmail(to: string, formattedBirthdayData: Object) {
-  sendgrid.send({
-    to: to,
-    from: 'birthdayweekly@pollak.io',
-    templateId: 'd-d1384c7dfa09484c9e5c1d1922485de6',
-    dynamicTemplateData: {
-      birthdays: formattedBirthdayData
-    },
-  })
-}
+export default new Email()
+

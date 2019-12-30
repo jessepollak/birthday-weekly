@@ -1,0 +1,44 @@
+<mjml version="3.3.3">
+  <mj-body background-color="#FFF">
+    <mj-section background-color="#C1272D" background-repeat="repeat" padding="20px 0" text-align="center">
+      <mj-column>
+        <mj-text color="#fff" font-size="20px" align="center">🎂 Birthday Weekly</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-weight="bold" font-size="13px" align="center">Birthdays in the next 7 days...</mj-text>
+        <mj-table border="1px solid #eee" align="left" font-family="Arial, sans-serif">
+          <tr style="text-align: left; padding: 10px;">
+            <th style="padding: 0 10px;">Name</th>
+            <th style="padding: 5px 0;">Birthday</th>
+            <th>Age</th>
+          </tr>
+        <% withinSevenDays.forEach(function (contact) { %>
+            <tr>
+              <td style="padding: 0 10px; width: 50%;"><%= contact.name %></td>
+              <td style="width: 25%"><%= contact.formattedBirthday %></td>
+              <td><%= contact.age %></td>
+            </tr>
+          <% }) %>
+        </mj-table>
+        <mj-text font-weight="bold" font-size="13px" align="center">Birthdays in the next 30 days...</mj-text>
+        <mj-table border="1px solid #eee" align="left" font-family="Arial, sans-serif">
+          <tr style="text-align: left; padding: 10px;">
+            <th style="padding: 0 10px;">Name</th>
+            <th style="padding: 5px 0;">Birthday</th>
+            <th>Age</th>
+          </tr>
+          <% withinThirtyDays.forEach(function (contact) { %>
+            <tr style="padding: 10px;">
+              <td style="padding: 0 10px; width: 50%;"><%= contact.name %></td>
+              <td style="width: 25%"><%= contact.formattedBirthday %></td>
+              <td><%= contact.age %></td>
+            </tr>
+          <% }) %>
+        </mj-table>
+        <mj-text align="center" color="#55575d" font-family="Arial, sans-serif" font-size="14px" line-height="20px" padding="0px 25px 0px 25px">To manage your contacts and notification settings, click <a href="<%= manageURL %>" target="_blank">here</a>.</a></mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

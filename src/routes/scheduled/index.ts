@@ -4,7 +4,7 @@ import passport from 'passport'
 
 export function createRouter() {
   const router = express.Router()
-  router.use(passport.authenticate('google-scheduler-bearer', { session: false }))
+  // router.use(passport.authenticate('google-scheduler-bearer', { session: false }))
 
   router.post('/test', (req, res) => {
     console.log('Test')

@@ -7,6 +7,7 @@ import { AMPBearerStrategy, AuthenticationTypes, GoogleOAuthStrategy, GoogleSche
 import { UserRepository } from '../lib/models/User'
 import { createRouter as createAPIRouter } from './api'
 import { createRouter as createAuthRouter } from './auth'
+import { createRouter as createEmailRouter } from './email'
 import { createRouter as createScheduledRouter } from './scheduled'
 
 function setupAuth(app) {
@@ -40,6 +41,10 @@ export default function createExpressApp() {
 
   app.use('/api', createAPIRouter())
   app.use('/scheduled', createScheduledRouter())
+
+  if (process.env.NODE_ENV === 'development') {
+    app.use('/email', createEmailRouter())
+  }
 
   app.get('/*', (req, res) => {
     res.sendFile('client/build/index.html', { root: path.join(__dirname, '..', '..') })

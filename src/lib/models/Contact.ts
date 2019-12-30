@@ -109,6 +109,27 @@ export default class Contact {
     return birthdayNormalizedToYear.diff(currentDate, 'days')
   }
 
+  get age() {
+    let age
+    const birthday = moment.utc(this.birthday)
+    if (birthday.year() === moment.utc().year() || birthday.year() === 0) {
+      return "Unknown"
+    } else {
+      age = moment.utc().year() - birthday.year() 
+
+      // If in the new year, add one
+      if (birthday.dayOfYear() < moment.utc().dayOfYear()) {
+        age += 1
+      }
+    }
+
+    return age
+  }
+
+  get formattedBirthday() {
+    return moment.utc(this.birthday).format('MMM Do')
+  }
+
   updateFromGoogle(contact) {
     if (contact.birthday) this.birthday = contact.birthday
     if (contact.image) this.image = contact.image
