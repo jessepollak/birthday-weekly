@@ -82,7 +82,8 @@ class TaskManager {
   }
 
   createURL(path) {
-    return url.resolve(this.configuration.baseURL, path)
+    const pathWithTasks = url.resolve('tasks', path)
+    return url.resolve(this.configuration.baseURL, pathWithTasks)
   }
 }
 
