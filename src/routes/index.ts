@@ -4,6 +4,7 @@ import express from 'express'
 import passport from 'passport'
 import path from 'path'
 import * as Sentry from '@sentry/node'
+import { RewriteFrames } from '@sentry/integrations'
 import { AMPBearerStrategy, AuthenticationTypes, GoogleOAuthStrategy, GoogleTasksBearerStrategy, JWTStrategy } from '../lib/authentication'
 import { UserRepository } from '../lib/models/User'
 import { createRouter as createAPIRouter } from './api'
@@ -40,9 +41,18 @@ function setupAuth(app) {
 export default function createExpressApp() {
   const app = express()
 
+  const sentryIntegrations = []
+
+  if (process.env.NODE_ENV === 'production') {
+    sentryIntegrations.push(new RewriteFrames({
+      root: '/usr/src/app'
+    }))
+  }
+
   Sentry.init({ 
     dsn: 'https://dace6fc57d2a4793a7701d21ce7d1689@sentry.io/1869208',
-    environment: process.env.SENTRY_ENVIRONMENT || 'development'
+    environment: process.env.SENTRY_ENVIRONMENT || 'development',
+    integrations: sentryIntegrations
   })
 
   app.use(Sentry.Handlers.requestHandler())
