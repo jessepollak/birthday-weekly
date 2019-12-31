@@ -13,3 +13,5 @@ jobs:
       - uses: ./.github/actions/google
         env:
           GOOGLE_SERVICE_KEY: ${{ secrets.GoogleServiceKey }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SentryAuthToken }}
+          SENTRY_ORG: birthday-weekly
