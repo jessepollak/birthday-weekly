@@ -8,6 +8,10 @@ export default async function sendWeeklyEmail(req, res) {
   console.log('===BODY===')
 
   const user = await UserRepository.find(req.body.userId)
+  if (!user) {
+    return res.send("OK")
+  }
+
   const upcomingContacts = await ContactRepository.fetchContactsWithUpcomingBirthdays(user)
 
   email.sendWeeklyEmail(user.email, {

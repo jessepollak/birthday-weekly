@@ -2,7 +2,6 @@ import { CloudTasksClient } from '@google-cloud/tasks'
 import express from 'express'
 import url from 'url'
 import path from 'path'
-import querystring from 'querystring'
 import passport from 'passport'
 
 interface TaskManagerConfiguration {
@@ -33,6 +32,7 @@ class TaskManager {
 
   createRouter() {
     const router = express.Router()
+    router.use(express.json())
     router.use(passport.authenticate('google-tasks-bearer', { session: false }))
 
     for (var route in this.routes) {
@@ -53,20 +53,23 @@ class TaskManager {
       queue
     )
 
-    const task = {
+    let task = {
       httpRequest: {
         httpMethod: 'POST',
         url: this.createURL(path),
         oidcToken: {
           serviceAccountEmail: this.configuration.serviceAccountEmail
         },
-        body: undefined
+        body: undefined,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       },
       scheduleTime: {}
     }
     
     if (Object.keys(payload).length) {
-      task.httpRequest.body = Buffer.from(querystring.encode(payload)).toString('base64')
+      task.httpRequest.body = Buffer.from(JSON.stringify(payload)).toString('base64')
     }
     
     if (delayInSeconds) {
