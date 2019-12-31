@@ -2,6 +2,7 @@ import { CloudTasksClient } from '@google-cloud/tasks'
 import express from 'express'
 import url from 'url'
 import path from 'path'
+import querystring from 'querystring'
 import passport from 'passport'
 
 interface TaskManagerConfiguration {
@@ -65,7 +66,7 @@ class TaskManager {
     }
     
     if (Object.keys(payload).length) {
-      task.httpRequest.body = Buffer.from(JSON.stringify(payload)).toString('base64')
+      task.httpRequest.body = Buffer.from(querystring.encode(payload)).toString('base64')
     }
     
     if (delayInSeconds) {
