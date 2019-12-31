@@ -1,6 +1,7 @@
 import { CloudTasksClient } from '@google-cloud/tasks'
 import express from 'express'
 import url from 'url'
+import path from 'path'
 import passport from 'passport'
 
 interface TaskManagerConfiguration {
@@ -81,9 +82,8 @@ class TaskManager {
     return this.client.createTask(request)
   }
 
-  createURL(path) {
-    const pathWithTasks = url.resolve('tasks', path)
-    return url.resolve(this.configuration.baseURL, pathWithTasks)
+  createURL(p) {
+    return url.resolve(this.configuration.baseURL, path.join('/tasks', p))
   }
 }
 
