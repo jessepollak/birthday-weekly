@@ -19,7 +19,7 @@ RUN cd client && npm install --only=production
 COPY . ./
 
 # Compile TypeScript
-RUN npm run tsc -p tsconfig.production.json
+RUN npm run tsc:production
 RUN cd client && npm run build
 
 # Run the web service on container startup.

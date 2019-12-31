@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "tsc": "tsc",
+    "tsc:production": "tsc -p tsconfig.production.json",
     "start:development": "ts-node-dev --respawn --transpileOnly ./src/start.ts",
     "start:production": "node build/start.js",
     "test": "jest",
