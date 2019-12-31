@@ -1,6 +1,7 @@
 import { configure as configureDatabase } from './lib/models'
 import createExpressApp from './routes'
 import email from './lib/email'
+import configureTasks from './routes/tasks'
 
 const app = createExpressApp()
 const database = configureDatabase(app)

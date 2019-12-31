@@ -3,12 +3,12 @@ import cookieParser from 'cookie-parser'
 import express from 'express'
 import passport from 'passport'
 import path from 'path'
-import { AMPBearerStrategy, AuthenticationTypes, GoogleOAuthStrategy, GoogleSchedulerBearerStrategy, JWTStrategy } from '../lib/authentication'
+import { AMPBearerStrategy, AuthenticationTypes, GoogleOAuthStrategy, GoogleTasksBearerStrategy, JWTStrategy } from '../lib/authentication'
 import { UserRepository } from '../lib/models/User'
 import { createRouter as createAPIRouter } from './api'
 import { createRouter as createAuthRouter } from './auth'
 import { createRouter as createEmailRouter } from './email'
-import { createRouter as createScheduledRouter } from './scheduled'
+import { createRouter as createTasksRouter } from './tasks'
 
 function setupAuth(app) {
   app.use(bodyParser.urlencoded({ extended: false }))
@@ -21,7 +21,7 @@ function setupAuth(app) {
 
   passport.use(AuthenticationTypes.GoogleOauth, GoogleOAuthStrategy)
   passport.use(AuthenticationTypes.AmpBearer, AMPBearerStrategy)
-  passport.use(AuthenticationTypes.GoogleSchedulerBearer, GoogleSchedulerBearerStrategy)
+  passport.use(AuthenticationTypes.GoogleTasksBearer, GoogleTasksBearerStrategy)
   passport.use(AuthenticationTypes.JWT, JWTStrategy)
 
   passport.serializeUser((user: { id: string }, done) => {
@@ -40,7 +40,7 @@ export default function createExpressApp() {
   setupAuth(app)
 
   app.use('/api', createAPIRouter())
-  app.use('/scheduled', createScheduledRouter())
+  app.use('/tasks', createTasksRouter())
 
   if (process.env.NODE_ENV === 'development') {
     app.use('/email', createEmailRouter())

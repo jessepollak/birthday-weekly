@@ -8,7 +8,7 @@ import User, { UserRepository, UserGoogleCredentials } from './models/User'
 export const AuthenticationTypes = {
   GoogleOauth: 'google-oauth',
   AmpBearer: 'amp-bearer',
-  GoogleSchedulerBearer: 'google-scheduler-bearer',
+  GoogleTasksBearer: 'google-tasks-bearer',
   JWT: 'jwt'
 }
 
@@ -16,14 +16,14 @@ export const AMPBearerStrategy = new BearerStrategy(async function(token, done) 
   return done(null, false)
 })
 
-export const GoogleSchedulerBearerStrategy = new BearerStrategy(
+export const GoogleTasksBearerStrategy = new BearerStrategy(
   async function(token, done) {
-    if (!process.env.GOOGLE_SCHEDULER_IDENTITY_EMAIL) {
-      console.warn('No scheduler email configured, therefore cannot authenticate.')
+    if (!process.env.GOOGLE_TASKS_IDENTITY_EMAIL) {
+      console.warn('No tasks email configured, therefore cannot authenticate.')
       throw new Error('Missing configuration')
     }
 
-    const emailToVerify = process.env.GOOGLE_SCHEDULER_IDENTITY_EMAIL
+    const emailToVerify = process.env.GOOGLE_TASKS_IDENTITY_EMAIL
     const verifyURL = `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
     const rawResponse = await fetch(verifyURL)
     const data = await rawResponse.json()
@@ -36,7 +36,7 @@ export const GoogleSchedulerBearerStrategy = new BearerStrategy(
       return done(null, false)
     }
 
-    return done(null, data, { message: 'success', scope: 'run_scheduled_jobs' })
+    return done(null, data, { message: 'success', scope: 'run_tasks' })
   }
 )
 
