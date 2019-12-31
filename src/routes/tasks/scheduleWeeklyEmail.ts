@@ -6,7 +6,7 @@ export default async function weeklyEmail(req: Request, res: Response) {
   const users = await UserRepository.all()
 
   for (let user of users) {
-    tasks.enqueue('scheduled', '/send-weekly-email', {
+    tasks.enqueue('tasks', '/send-weekly-email', {
       userId: user.id
     })
   }

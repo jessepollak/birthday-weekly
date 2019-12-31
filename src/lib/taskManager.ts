@@ -10,7 +10,7 @@ interface TaskManagerConfiguration {
   serviceAccountEmail?: string
 }
 
-type TaskQueue = 'scheduled'
+type TaskQueue = 'tasks'
 type TaskPath = (
   '/test' |
   '/schedule-weekly-email' | 
