@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser'
 import express from 'express'
 import passport from 'passport'
 import path from 'path'
+import * as Sentry from '@sentry/node'
 import { AMPBearerStrategy, AuthenticationTypes, GoogleOAuthStrategy, GoogleTasksBearerStrategy, JWTStrategy } from '../lib/authentication'
 import { UserRepository } from '../lib/models/User'
 import { createRouter as createAPIRouter } from './api'
@@ -11,6 +12,7 @@ import { createRouter as createEmailRouter } from './email'
 import { createRouter as createTasksRouter } from './tasks'
 
 function setupAuth(app) {
+
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(cookieParser())
   app.use(passport.initialize())
@@ -37,6 +39,14 @@ function setupAuth(app) {
 }
 export default function createExpressApp() {
   const app = express()
+
+  Sentry.init({ 
+    dsn: 'https://dace6fc57d2a4793a7701d21ce7d1689@sentry.io/1869208',
+    environment: process.env.SENTRY_ENVIRONMENT || 'development'
+  })
+
+  app.use(Sentry.Handlers.requestHandler())
+
   setupAuth(app)
 
   app.use('/api', createAPIRouter())
@@ -49,6 +59,8 @@ export default function createExpressApp() {
   app.get('/*', (req, res) => {
     res.sendFile('client/build/index.html', { root: path.join(__dirname, '..', '..') })
   })
+
+  app.use(Sentry.Handlers.errorHandler())
 
   return app
 }
