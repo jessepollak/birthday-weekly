@@ -1,6 +1,7 @@
 import { CloudTasksClient } from '@google-cloud/tasks'
 import express from 'express'
 import url from 'url'
+import passport from 'passport'
 
 interface TaskManagerConfiguration {
   project?: string
@@ -30,7 +31,7 @@ class TaskManager {
 
   createRouter() {
     const router = express.Router()
-    // router.use(passport.authenticate('google-tasks-bearer', { session: false }))
+    router.use(passport.authenticate('google-tasks-bearer', { session: false }))
 
     for (var route in this.routes) {
       router.post(route, this.routes[route])
