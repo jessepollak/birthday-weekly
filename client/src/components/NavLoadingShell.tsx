@@ -21,8 +21,8 @@ const Navigation: FunctionComponent<{}> = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> Birthday Weekly</Navbar.Brand>
+      <Container className="justify-content-end">
       { loggedInUserState.state === 'loggedin' ? (
-        <Container className="justify-content-end">
           <DropdownButton 
             title={loggedInUserState.user.email} 
             id="nav-dropdown" 
@@ -33,10 +33,10 @@ const Navigation: FunctionComponent<{}> = () => {
             <Dropdown.Item onClick={onRefresh}>♻️ Refresh contacts</Dropdown.Item>
             <Dropdown.Item href="/auth/logout">Log out</Dropdown.Item>
           </DropdownButton>
-        </Container>
       ) : (
         <div>{ loggedInUserState.state === 'loggedout' && (<Button href="/auth/google">Log in</Button> ) }</div>
       )}
+      </Container>
     </Navbar>
   )
 }
