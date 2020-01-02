@@ -62,6 +62,7 @@ export class ContactRepository {
     if (!options.includeIgnored) {
       contacts = contacts.filter((c) => !c.preferences.ignore)
     }
+
     const formattedBirthdayData = {
       withinSevenDays: contacts.filter((c) => c.deltaFromBirthdayInDays <= 7).sort((a, b) => a.deltaFromBirthdayInDays - b.deltaFromBirthdayInDays),
       withinThirtyDays: contacts.filter((c) => c.deltaFromBirthdayInDays > 7 && c.deltaFromBirthdayInDays <= 30).sort((a, b) => a.deltaFromBirthdayInDays - b.deltaFromBirthdayInDays),
@@ -100,7 +101,7 @@ export default class Contact {
   };
 
   get deltaFromBirthdayInDays() {
-    const currentDate = moment.utc()
+    const currentDate = moment.utc({ hour: 0, minute: 0, second: 0, millisecond: 0 })
     const birthdayNormalizedToYear = moment.utc(this.birthday).year(currentDate.year())
     if (birthdayNormalizedToYear.diff(currentDate) < 0) {
       birthdayNormalizedToYear.add(1, 'year')
@@ -110,17 +111,16 @@ export default class Contact {
   }
 
   get age() {
-    let age
     const birthday = moment.utc(this.birthday)
     if (birthday.year() === moment.utc().year() || birthday.year() === 0) {
       return "Unknown"
-    } else {
-      age = moment.utc().year() - birthday.year() 
+    } 
 
-      // If in the new year, add one
-      if (birthday.dayOfYear() < moment.utc().dayOfYear()) {
-        age += 1
-      }
+    let age = moment.utc().year() - birthday.year()
+
+    // If in the new year, add one
+    if (birthday.dayOfYear() < moment.utc().dayOfYear()) {
+      age += 1
     }
 
     return age

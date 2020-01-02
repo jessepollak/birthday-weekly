@@ -20,4 +20,11 @@ describe('deltaFromCurrentDateInDays', () => {
     contact.birthday = moment({ day: 25, month: 0, year: 1989 }).toDate()
     expect(contact.deltaFromBirthdayInDays).toEqual(41)
   })
+
+  test('ignores hours in the current date', () => {
+    advanceTo(new Date(2019, 11, 1, 6, 0, 0))
+    const contact = new Contact()
+    contact.birthday = moment({ day: 1, month: 11, year: 1989 }).toDate()
+    expect(contact.deltaFromBirthdayInDays).toEqual(0)
+  })
 })
