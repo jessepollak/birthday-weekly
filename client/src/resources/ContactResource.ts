@@ -4,6 +4,7 @@ import BaseResource from './BaseResource';
 export default class ContactResource extends BaseResource {
   readonly id: string | undefined = undefined;
   readonly name: string = '';
+  readonly age?: number;
   readonly image: string = '';
   readonly source: string = '';
   readonly birthday: Date = new Date();
@@ -21,18 +22,15 @@ export default class ContactResource extends BaseResource {
   }
 
   public formattedAge(): string {
-    const yearDiff = moment.utc().diff(this.birthdayMoment(), 'years')
-    if (yearDiff !== 0) {
-      return `${yearDiff + 1}`
-    } else {
+    if (!this.age) {
       return 'NA'
     }
+
+    return this.age.toString()
   }
 
   public formattedName(): string {
     return this.name
-    // const [firstName, ...rest] = this.name.split(" ")
-    // return [firstName, ...rest.map((n) => n[0] + ".")].join(" ")
   }
 
   static getFetchOptions() {

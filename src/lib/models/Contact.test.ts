@@ -28,3 +28,21 @@ describe('deltaFromCurrentDateInDays', () => {
     expect(contact.deltaFromBirthdayInDays).toEqual(0)
   })
 })
+
+describe('age', () => {
+  test('calculates correctly when year is present', () => {
+    advanceTo(new Date(2019, 11, 1, 6, 0, 0))
+    const contact = new Contact()
+    contact.birthday = moment({ day: 15, month: 11, year: 1989 }).toDate()
+    expect(contact.age).toEqual(30)
+    contact.birthday = moment({ day: 15, month: 11, year: 1999 }).toDate()
+    expect(contact.age).toEqual(20)
+  })
+
+  test('returns undefined when year is set to undefined year', () => {
+    advanceTo(new Date(2019, 11, 1, 6, 0, 0))
+    const contact = new Contact()
+    contact.birthday = moment({ day: 15, month: 11, year: Contact.UNDEFINED_YEAR }).toDate()
+    expect(contact.age).toEqual(undefined)
+  })
+})

@@ -40,7 +40,7 @@ export class ContactRepository {
     }
 
     await batch.commit()
-    
+
     return contacts
   }
 
@@ -88,6 +88,8 @@ export class ContactRepository {
 
 @Collection()
 export default class Contact {
+  static UNDEFINED_YEAR = 1000
+
   id: string;
   userId; string;
   name: string;
@@ -110,11 +112,11 @@ export default class Contact {
     return birthdayNormalizedToYear.diff(currentDate, 'days')
   }
 
-  get age() {
+  public get age() {
     const birthday = moment.utc(this.birthday)
-    if (birthday.year() === moment.utc().year() || birthday.year() === 0) {
-      return "Unknown"
-    } 
+    if (birthday.year() === Contact.UNDEFINED_YEAR) {
+      return undefined
+    }
 
     let age = moment.utc().year() - birthday.year()
 
@@ -154,10 +156,22 @@ export default class Contact {
 
     if (person.birthdays?.length) {
       const { day, month, year } = person.birthdays[0].date
-      contact.birthday = moment.utc({ day, month: month - 1, year }).toDate()
+      contact.birthday = moment.utc({ day, month: month - 1, year: year ? year : this.UNDEFINED_YEAR }).toDate()
     }
 
     return contact
   }
-}
 
+  toJSON() {
+    return {
+      id: this.id,
+      userId: this.userId,
+      name: this.name,
+      image: this.image,
+      source: this.source,
+      birthday: this.birthday,
+      age: this.age,
+      preferences: this.preferences
+    }
+  }
+}
