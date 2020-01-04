@@ -27,7 +27,7 @@ const Navigation: FunctionComponent<{}> = () => {
             title={loggedInUserState.user.email}
             id="nav-dropdown"
             alignRight
-            variant="secondary"
+            variant="light"
             className="justify-content-end"
           >
             <Dropdown.Item onClick={onRefresh}>♻️ Refresh contacts</Dropdown.Item>

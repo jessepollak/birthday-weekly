@@ -8,10 +8,9 @@
 
 .sectionHeader {
   margin-bottom: 0;
-  text-align: center;
   font-weight: bold;
   background: #fff;
-  padding: 10px 0;
+  padding: 10px;
   border-right: 1px solid #eee;
   border-left: 1px solid #eee;
 }

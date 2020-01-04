@@ -21,19 +21,18 @@ const BirthdayRow: React.FC<{ contact: ContactResource }> = ({ contact }) => {
   useEffect(() => () => {mountedRef.current = false;},[]);
 
   if (contact.preferences?.ignore) {
-    ignoreText = '🎂'
+    ignoreText = '🎂 Unignore'
   } else {
-    ignoreText = '🚫'
+    ignoreText = '🚫 Ignore'
   }
 
   return (
     <tr key={contact.id} className={contact.preferences?.ignore ? styles.birthdayRowIgnored : undefined}>
       <td>{ contact.formattedName() }</td>
-      <td>{ contact.birthdayMoment().format('MMM Do') }</td>
-      <td>{ contact.formattedAge() }</td>
+      <td>{ contact.birthdayMoment().format('MMM Do') } ({ contact.formattedAge() })</td>
       <td>
         <ButtonGroup>
-          <Button isLoading={isSubmittingRequest} onClick={onIgnoreClick}>{ ignoreText }</Button>
+          <Button block size="sm" isLoading={isSubmittingRequest} onClick={onIgnoreClick}>{ ignoreText }</Button>
         </ButtonGroup>
       </td>
     </tr>
@@ -56,12 +55,11 @@ const BirthdayTable: React.FC<{ contacts: ContactResource[] }> = ({ contacts }) 
   }
 
   return (
-    <Table className={styles.table} striped bordered>
+    <Table className={styles.table} size="sm" striped bordered>
       <thead>
         <tr>
           <th>Name</th>
-          <th>Birthday</th>
-          <th>Age</th>
+          <th>Birthday (Age)</th>
           <th>Actions</th>
         </tr>
       </thead>
