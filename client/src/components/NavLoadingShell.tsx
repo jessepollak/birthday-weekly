@@ -19,13 +19,13 @@ const Navigation: FunctionComponent<{}> = () => {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> Birthday Weekly</Navbar.Brand>
-      <Container className="justify-content-end">
+    <Navbar bg="light" expand={false}>
+      <Navbar.Brand href="/"><span role="img" aria-label="cake">🎂</span> <span className={styles.birthdayWeeklyName}>Birthday Weekly</span></Navbar.Brand>
+      <div className="justify-content-end">
       { loggedInUserState.state === 'loggedin' ? (
-          <DropdownButton 
-            title={loggedInUserState.user.email} 
-            id="nav-dropdown" 
+          <DropdownButton
+            title={loggedInUserState.user.email}
+            id="nav-dropdown"
             alignRight
             variant="secondary"
             className="justify-content-end"
@@ -36,7 +36,7 @@ const Navigation: FunctionComponent<{}> = () => {
       ) : (
         <div>{ loggedInUserState.state === 'loggedout' && (<Button href="/auth/google">Log in</Button> ) }</div>
       )}
-      </Container>
+      </div>
     </Navbar>
   )
 }
@@ -53,10 +53,10 @@ export const NavLoadingShell: FunctionComponent<NavLoadingShellProps> = ({ child
   return (
     <Container className={styles.container}>
       <Row noGutters>
-        <Col md={{ span: 6, offset: 3 }}>
+        <Col lg={{ span: 6, offset: 3 }}>
           <Navigation />
           <Suspense fallback={<MainSpinner />}>
-            <NetworkErrorBoundary> 
+            <NetworkErrorBoundary>
               { children }
             </NetworkErrorBoundary>
           </Suspense>
