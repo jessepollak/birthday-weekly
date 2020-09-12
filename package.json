@@ -40,7 +40,7 @@
     "jsonwebtoken": "^8.5.1",
     "mjml": "^4.5.1",
     "moment": "^2.24.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
