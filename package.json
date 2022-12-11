@@ -32,7 +32,7 @@
     "cookie-parser": "^1.4.4",
     "ejs": "^3.0.1",
     "email-templates": "^6.1.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-session": "^1.17.0",
     "fireorm": "^0.12.1",
     "googleapis": "^45.0.0",
